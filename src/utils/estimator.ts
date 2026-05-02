@@ -1,23 +1,21 @@
 import {
-  FACE_MEAN,
-  FACE_SD,
   HEIGHT_FEMALE_MEAN_CM,
   HEIGHT_FEMALE_SD_CM,
   HEIGHT_MALE_MEAN_CM,
   HEIGHT_MALE_SD_CM,
-  ageBandOptions,
-  athleticOptions,
-  physiqueOptions,
-  voiceAuraOptions,
+  TRAIT_DEV_MEAN,
+  TRAIT_DEV_SD,
+  VITALITY_CENTER_DEV,
+  VITALITY_SPREAD_DEV,
 } from '../data/assumptions';
 import type {
   GeneticEstimationResult,
   GeneticInput,
   GeneticStep,
   Gender,
-  RatioOption,
   RarityTone,
 } from '../types';
+import { DEVIATION_MAX, DEVIATION_MIN } from '../types';
 
 function erfApprox(x: number): number {
   const sign = x < 0 ? -1 : 1;
@@ -83,14 +81,6 @@ export function inverseStandardNormal(p: number): number {
   );
 }
 
-function findById<TId extends string>(options: RatioOption<TId>[], id: TId): RatioOption<TId> {
-  const option = options.find((item) => item.id === id);
-  if (!option) {
-    throw new Error(`Unknown option: ${id}`);
-  }
-  return option;
-}
-
 function tailRatioNormal(threshold: number, mean: number, sd: number): number {
   const z = (threshold - mean) / sd;
   return 1 - normalCdf(z);
@@ -98,6 +88,10 @@ function tailRatioNormal(threshold: number, mean: number, sd: number): number {
 
 function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n));
+}
+
+function clampDeviation(n: number): number {
+  return clamp(n, DEVIATION_MIN, DEVIATION_MAX);
 }
 
 function genderLabel(gender: Gender): string {
@@ -134,6 +128,21 @@ function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone:
   return { rarityLabel: '母集団としては広め（技巧・努力別次元）', rarityTone: 'reasonable' };
 }
 
+/** 尾確率モデル：「その偏差値以上」を N(TRAIT_DEV_MEAN, TRAIT_DEV_SD) で解釈。 */
+export function ratioFromTraitDeviation(deviation: number): number {
+  const d = clampDeviation(deviation);
+  return tailRatioNormal(d, TRAIT_DEV_MEAN, TRAIT_DEV_SD);
+}
+
+/** 身長偏差値から目安 cm（表示用）。z=(D−50)/10 を身長の正規近似に写像。 */
+export function approximateHeightCmFromDeviation(deviation: number, gender: Gender): number {
+  const d = clampDeviation(deviation);
+  const z = (d - TRAIT_DEV_MEAN) / TRAIT_DEV_SD;
+  const mean = gender === 'male' ? HEIGHT_MALE_MEAN_CM : HEIGHT_FEMALE_MEAN_CM;
+  const sd = gender === 'male' ? HEIGHT_MALE_SD_CM : HEIGHT_FEMALE_SD_CM;
+  return mean + z * sd;
+}
+
 /** 連続比率 p から「遺伝子偏差値」へ：上位側の希少度として z を割り当てる。 */
 export function geneticDeviationFromRatio(finalRatio: number): number {
   const p = clamp(finalRatio, 1e-15, 1 - 1e-15);
@@ -154,56 +163,79 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     },
   ];
 
-  const face = clamp(input.faceDeviation, 40, 80);
-  const height = clamp(input.heightCm, 150, 190);
-
   if (input.enabled.face) {
-    const ratio = tailRatioNormal(face, FACE_MEAN, FACE_SD);
+    const d = clampDeviation(input.faceDeviation);
+    const ratio = ratioFromTraitDeviation(d);
     appendStep(
       steps,
       'face',
-      `顔面偏差値 ${face} 以上（仮定分布の尾）`,
+      `顔面偏差値 ${d} 以上（N(${TRAIT_DEV_MEAN},${TRAIT_DEV_SD}) の尾）`,
       ratio,
-      `顔の総合スコアを N(${FACE_MEAN}, ${FACE_SD}) の偏差値とみなし、片側確率を使用。`,
+      `「そのスコア以上」が母集団に占める割合を片側確率として掛ける。`,
     );
   }
 
   if (input.enabled.height) {
+    const d = clampDeviation(input.heightDeviation);
     const mean = input.gender === 'male' ? HEIGHT_MALE_MEAN_CM : HEIGHT_FEMALE_MEAN_CM;
     const sd = input.gender === 'male' ? HEIGHT_MALE_SD_CM : HEIGHT_FEMALE_SD_CM;
-    const ratio = tailRatioNormal(height, mean, sd);
+    const thresholdCm = approximateHeightCmFromDeviation(d, input.gender);
+    const ratio = tailRatioNormal(thresholdCm, mean, sd);
     appendStep(
       steps,
       'height',
-      `身長 ${height}cm 以上（${genderLabelJp}・正規近似）`,
+      `身長偏差値 ${d}（目安 ${thresholdCm.toFixed(1)} cm・${genderLabelJp}）`,
       ratio,
-      `平均 ${mean}cm・SD ${sd}cm の正規近似（docs参照）。`,
+      `z=(D−${TRAIT_DEV_MEAN})/${TRAIT_DEV_SD} を身長の正規近似（平均 ${mean}cm・SD ${sd}cm）に写像し、同じ z で尾確率を取る。`,
     );
   }
 
   if (input.enabled.physique) {
-    const option = findById(physiqueOptions, input.physiqueId);
-    appendStep(steps, 'physique', `体格：${option.label}`, option.ratio, option.note);
+    const d = clampDeviation(input.physiqueDeviation);
+    const ratio = ratioFromTraitDeviation(d);
+    appendStep(
+      steps,
+      'physique',
+      `体格偏差値 ${d} 以上`,
+      ratio,
+      `骨格・筋肉の先天イメージを N(${TRAIT_DEV_MEAN},${TRAIT_DEV_SD}) のスケールに載せた尾確率。`,
+    );
   }
 
   if (input.enabled.athletic) {
-    const option = findById(athleticOptions, input.athleticId);
-    appendStep(steps, 'athletic', `運動神経：${option.label}`, option.ratio, option.note);
+    const d = clampDeviation(input.athleticDeviation);
+    const ratio = ratioFromTraitDeviation(d);
+    appendStep(
+      steps,
+      'athletic',
+      `運動神経偏差値 ${d} 以上`,
+      ratio,
+      `協調・瞬発などを同一スケールでざっくり尾モデル化。`,
+    );
   }
 
   if (input.enabled.voiceAura) {
-    const option = findById(voiceAuraOptions, input.voiceAuraId);
-    appendStep(steps, 'voiceAura', `声・オーラ：${option.label}`, option.ratio, option.note);
+    const d = clampDeviation(input.voiceAuraDeviation);
+    const ratio = ratioFromTraitDeviation(d);
+    appendStep(
+      steps,
+      'voiceAura',
+      `声・オーラ偏差値 ${d} 以上`,
+      ratio,
+      `計測困難なのでエンタメ寄り。分布は他因子と同型の仮定。`,
+    );
   }
 
   if (input.enabled.age) {
-    const option = findById(ageBandOptions, input.ageBandId);
+    const d = clampDeviation(input.ageVitalityDeviation);
+    const rawRatio = normalCdf((d - VITALITY_CENTER_DEV) / VITALITY_SPREAD_DEV);
+    const ratio = clamp(rawRatio, 0.05, 1);
     appendStep(
       steps,
       'age',
-      `加齢補正：${option.label}`,
-      option.ratio,
-      `${option.note}（シーン上の係数であり、人口尾確率ではない）。`,
+      `若さ・持久（界隈）偏差値 ${d}`,
+      ratio,
+      `累積 Φ((D−${VITALITY_CENTER_DEV})/${VITALITY_SPREAD_DEV})。高いほど係数が大きく若さ・スタミナ有利（尾モデルではない）。`,
     );
   }
 

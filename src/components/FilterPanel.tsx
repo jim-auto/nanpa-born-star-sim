@@ -1,23 +1,42 @@
-import {
-  ageBandOptions,
-  athleticOptions,
-  physiqueOptions,
-  voiceAuraOptions,
-} from '../data/assumptions';
 import type { Gender, GeneticConditionId, GeneticInput } from '../types';
+import { DEVIATION_MAX, DEVIATION_MIN } from '../types';
+import { approximateHeightCmFromDeviation } from '../utils/estimator';
 
 interface Props {
   value: GeneticInput;
   onChange: (next: GeneticInput) => void;
 }
 
-const moduleMeta: { id: GeneticConditionId; title: string; description: string }[] = [
-  { id: 'face', title: '顔面偏差値', description: 'N(50,10) 片側（40–80）' },
-  { id: 'height', title: '身長', description: '性別別の正規尾（150–190cm）' },
-  { id: 'physique', title: '体格', description: '筋肉・骨格の仮定比' },
-  { id: 'athletic', title: '運動神経', description: '協調性・瞬発の先天性寄り' },
-  { id: 'voiceAura', title: '声・オーラ', description: '計測困難＝主観係数強め' },
-  { id: 'age', title: '加齢補正', description: 'シーン上の係数（尾確率ではない）' },
+type DeviationField =
+  | 'faceDeviation'
+  | 'heightDeviation'
+  | 'physiqueDeviation'
+  | 'athleticDeviation'
+  | 'voiceAuraDeviation'
+  | 'ageVitalityDeviation';
+
+const MODULES: {
+  id: GeneticConditionId;
+  title: string;
+  description: string;
+  field: DeviationField;
+}[] = [
+  { id: 'face', title: '顔面偏差値', description: `尾モデル N(50,10)・${DEVIATION_MIN}–${DEVIATION_MAX}`, field: 'faceDeviation' },
+  {
+    id: 'height',
+    title: '身長偏差値',
+    description: `同じ z を性別別身長分布へ写像・目安 cm 表示（${DEVIATION_MIN}–${DEVIATION_MAX}）`,
+    field: 'heightDeviation',
+  },
+  { id: 'physique', title: '体格偏差値', description: '骨格・筋肉の先天イメージ（尾モデル）', field: 'physiqueDeviation' },
+  { id: 'athletic', title: '運動神経偏差値', description: '協調・瞬発など（尾モデル）', field: 'athleticDeviation' },
+  { id: 'voiceAura', title: '声・オーラ偏差値', description: '主観強め・同一スケールの尾仮定', field: 'voiceAuraDeviation' },
+  {
+    id: 'age',
+    title: '若さ・持久（界隈）偏差値',
+    description: '累積係数モデル（尾とは別解釈・docs参照）',
+    field: 'ageVitalityDeviation',
+  },
 ];
 
 function Toggle({
@@ -51,16 +70,24 @@ export function FilterPanel({ value, onChange }: Props) {
       enabled: { ...value.enabled, [id]: enabled },
     });
 
+  const setDeviation = (field: DeviationField, n: number) =>
+    onChange({
+      ...value,
+      [field]: n,
+    });
+
   return (
     <section className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold text-white">先天性モジュール</h2>
-            <p className="text-sm text-white/50">オンオフと入力が即座に連乗に反映されます。</p>
+            <p className="text-sm text-white/50">
+              各項目は偏差値 {DEVIATION_MIN}–{DEVIATION_MAX}。オンオフとスライダーが即座に連乗へ反映されます。
+            </p>
           </div>
           <fieldset className="flex gap-2 rounded-xl border border-white/10 bg-night-950/40 p-1">
-            <legend className="sr-only">性別（身長分布）</legend>
+            <legend className="sr-only">性別（身長の目安 cm）</legend>
             {(['male', 'female'] as const).map((g) => (
               <button
                 key={g}
@@ -79,142 +106,54 @@ export function FilterPanel({ value, onChange }: Props) {
         </header>
 
         <div className="grid gap-5 lg:grid-cols-2">
-          {moduleMeta.map((meta) => (
-            <article
-              key={meta.id}
-              className="rounded-xl border border-white/10 bg-night-950/35 p-4"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="text-sm font-semibold text-white">{meta.title}</h3>
-                  <p className="mt-1 text-xs text-white/45">{meta.description}</p>
+          {MODULES.map((meta) => {
+            const dev = value[meta.field];
+            const hintCm =
+              meta.id === 'height'
+                ? approximateHeightCmFromDeviation(dev, value.gender).toFixed(1)
+                : null;
+
+            return (
+              <article
+                key={meta.id}
+                className="rounded-xl border border-white/10 bg-night-950/35 p-4"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-semibold text-white">{meta.title}</h3>
+                    <p className="mt-1 text-xs text-white/45">{meta.description}</p>
+                  </div>
+                  <Toggle
+                    checked={value.enabled[meta.id]}
+                    onCheckedChange={(checked) => setEnabled(meta.id, checked)}
+                    label="反映"
+                  />
                 </div>
-                <Toggle
-                  checked={value.enabled[meta.id]}
-                  onCheckedChange={(checked) => setEnabled(meta.id, checked)}
-                  label="反映"
-                />
-              </div>
 
-              <div className="mt-4 opacity-100">
-                {meta.id === 'face' ? (
-                  <label className="block text-xs text-white/55">
-                    <div className="mb-2 flex items-center justify-between">
-                      <span>偏差値</span>
-                      <span className="tabular-nums text-white/85">{value.faceDeviation}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={40}
-                      max={80}
-                      step={1}
-                      disabled={!value.enabled.face}
-                      value={value.faceDeviation}
-                      onChange={(event) =>
-                        onChange({ ...value, faceDeviation: Number(event.target.value) })
-                      }
-                      className="w-full accent-star-500 disabled:opacity-35"
-                    />
-                  </label>
-                ) : null}
-
-                {meta.id === 'height' ? (
-                  <label className="block text-xs text-white/55">
-                    <div className="mb-2 flex items-center justify-between">
-                      <span>cm</span>
-                      <span className="tabular-nums text-white/85">{value.heightCm}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={150}
-                      max={190}
-                      step={1}
-                      disabled={!value.enabled.height}
-                      value={value.heightCm}
-                      onChange={(event) =>
-                        onChange({ ...value, heightCm: Number(event.target.value) })
-                      }
-                      className="w-full accent-star-500 disabled:opacity-35"
-                    />
-                  </label>
-                ) : null}
-
-                {meta.id === 'physique' ? (
-                  <select
-                    disabled={!value.enabled.physique}
-                    value={value.physiqueId}
-                    onChange={(event) =>
-                      onChange({ ...value, physiqueId: event.target.value as GeneticInput['physiqueId'] })
-                    }
-                    className="mt-1 w-full rounded-lg border border-white/15 bg-night-900/80 px-3 py-2 text-sm text-white outline-none ring-0 focus:border-star-400/60 disabled:opacity-35"
-                  >
-                    {physiqueOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                ) : null}
-
-                {meta.id === 'athletic' ? (
-                  <select
-                    disabled={!value.enabled.athletic}
-                    value={value.athleticId}
-                    onChange={(event) =>
-                      onChange({ ...value, athleticId: event.target.value as GeneticInput['athleticId'] })
-                    }
-                    className="mt-1 w-full rounded-lg border border-white/15 bg-night-900/80 px-3 py-2 text-sm text-white outline-none focus:border-star-400/60 disabled:opacity-35"
-                  >
-                    {athleticOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                ) : null}
-
-                {meta.id === 'voiceAura' ? (
-                  <select
-                    disabled={!value.enabled.voiceAura}
-                    value={value.voiceAuraId}
-                    onChange={(event) =>
-                      onChange({
-                        ...value,
-                        voiceAuraId: event.target.value as GeneticInput['voiceAuraId'],
-                      })
-                    }
-                    className="mt-1 w-full rounded-lg border border-white/15 bg-night-900/80 px-3 py-2 text-sm text-white outline-none focus:border-star-400/60 disabled:opacity-35"
-                  >
-                    {voiceAuraOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                ) : null}
-
-                {meta.id === 'age' ? (
-                  <select
-                    disabled={!value.enabled.age}
-                    value={value.ageBandId}
-                    onChange={(event) =>
-                      onChange({
-                        ...value,
-                        ageBandId: event.target.value as GeneticInput['ageBandId'],
-                      })
-                    }
-                    className="mt-1 w-full rounded-lg border border-white/15 bg-night-900/80 px-3 py-2 text-sm text-white outline-none focus:border-star-400/60 disabled:opacity-35"
-                  >
-                    {ageBandOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                ) : null}
-              </div>
-            </article>
-          ))}
+                <label className="mt-4 block text-xs text-white/55">
+                  <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                    <span>偏差値</span>
+                    <span className="tabular-nums text-white/85">
+                      {dev}
+                      {hintCm !== null ? (
+                        <span className="ml-2 text-white/50">（目安 {hintCm} cm）</span>
+                      ) : null}
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={DEVIATION_MIN}
+                    max={DEVIATION_MAX}
+                    step={1}
+                    disabled={!value.enabled[meta.id]}
+                    value={dev}
+                    onChange={(event) => setDeviation(meta.field, Number(event.target.value))}
+                    className="w-full accent-star-500 disabled:opacity-35"
+                  />
+                </label>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

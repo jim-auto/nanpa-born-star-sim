@@ -11,11 +11,11 @@ export const defaultGeneticInput: GeneticInput = {
     age: true,
   },
   faceDeviation: 52,
-  heightCm: 171,
-  physiqueId: 'average',
-  athleticId: 'medium',
-  voiceAuraId: 'pleasant',
-  ageBandId: 'early20s',
+  heightDeviation: 52,
+  physiqueDeviation: 52,
+  athleticDeviation: 52,
+  voiceAuraDeviation: 52,
+  ageVitalityDeviation: 50,
 };
 
 export const presetGodGenes: GeneticInput = {
@@ -29,11 +29,11 @@ export const presetGodGenes: GeneticInput = {
     age: true,
   },
   faceDeviation: 72,
-  heightCm: 182,
-  physiqueId: 'athleticBuild',
-  athleticId: 'elite',
-  voiceAuraId: 'unfair',
-  ageBandId: 'early20s',
+  heightDeviation: 64,
+  physiqueDeviation: 62,
+  athleticDeviation: 65,
+  voiceAuraDeviation: 68,
+  ageVitalityDeviation: 56,
 };
 
 export const presetAverageBundle: GeneticInput = {
@@ -47,11 +47,11 @@ export const presetAverageBundle: GeneticInput = {
     age: true,
   },
   faceDeviation: 50,
-  heightCm: 171,
-  physiqueId: 'average',
-  athleticId: 'medium',
-  voiceAuraId: 'plain',
-  ageBandId: 'late20s',
+  heightDeviation: 50,
+  physiqueDeviation: 50,
+  athleticDeviation: 50,
+  voiceAuraDeviation: 50,
+  ageVitalityDeviation: 48,
 };
 
 export const presetMortalGenes: GeneticInput = {
@@ -65,11 +65,11 @@ export const presetMortalGenes: GeneticInput = {
     age: true,
   },
   faceDeviation: 44,
-  heightCm: 162,
-  physiqueId: 'lean',
-  athleticId: 'low',
-  voiceAuraId: 'plain',
-  ageBandId: 'early40sPlus',
+  heightDeviation: 46,
+  physiqueDeviation: 47,
+  athleticDeviation: 46,
+  voiceAuraDeviation: 45,
+  ageVitalityDeviation: 38,
 };
 
 export const presets = [
