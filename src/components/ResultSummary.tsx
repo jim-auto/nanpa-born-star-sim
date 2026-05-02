@@ -106,7 +106,7 @@ export function ResultSummary({ result, input }: Props) {
     const birthRegionOption = getBirthRegionOption(input.birthRegionId);
     deviationItems.push({
       id: 'birthRegion',
-      label: '育ち',
+      label: '地域',
       value: `${birthRegionOption.displayDeviation}`,
       detail: birthRegionOption.label,
     });

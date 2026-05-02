@@ -321,7 +321,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'birthRegion',
-      `育ちの地域：${option.label}`,
+      `地域：${option.label}`,
       option.ratio,
       `${option.note} こちらも係数として掛けるだけです。`,
     );

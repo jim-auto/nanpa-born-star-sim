@@ -129,25 +129,25 @@ export interface BirthRegionOption {
   note: string;
 }
 
-/** 育ちの地域イメージ（係数）。 */
+/** 地域イメージ（係数）。 */
 export const birthRegionOptions: BirthRegionOption[] = [
   {
     id: 'rural',
-    label: '地方（大都市圏以外がベース）',
+    label: '地方（それ以外）',
     ratio: 1,
     displayDeviation: 35,
     note: 'ベースライン。',
   },
   {
     id: 'regionalCity',
-    label: '地方中枢・準大都市',
+    label: '地方都市',
     ratio: 0.88,
     displayDeviation: 45,
     note: '都会感が一段上がるイメージ。',
   },
   {
     id: 'metro',
-    label: '大都市圏育ち（関東・関西など）',
+    label: '大都市圏（関東・関西など）',
     ratio: 0.68,
     displayDeviation: 55,
     note: '人口比をざっくり。',
@@ -161,7 +161,7 @@ export const birthRegionOptions: BirthRegionOption[] = [
   },
   {
     id: 'abroad',
-    label: '海外育ち／多文化環境',
+    label: '海外／多文化環境',
     ratio: 0.52,
     displayDeviation: 65,
     note: '母数が曖昧なので中等度に置いた係数。',

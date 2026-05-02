@@ -250,8 +250,8 @@ export function FilterPanel({ value, onChange }: Props) {
           <article className="rounded-xl border border-white/10 bg-night-950/35 p-4 ring-1 ring-teal-500/15">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="text-sm font-semibold text-white">育ちの地域</h3>
-                <p className="mt-1 text-xs leading-relaxed text-white/55">都会感や育ちのイメージをラベルで雑に分け、係数で掛けます。</p>
+                <h3 className="text-sm font-semibold text-white">地域</h3>
+                <p className="mt-1 text-xs leading-relaxed text-white/55">都市寄りか地方寄りかのイメージをラベルで分け、係数で掛けます。</p>
               </div>
               <Toggle
                 checked={value.enabled.birthRegion}
@@ -260,7 +260,7 @@ export function FilterPanel({ value, onChange }: Props) {
               />
             </div>
             <label className="mt-4 block text-xs text-white/55">
-              <span className="mb-2 block text-white/55">イメージ</span>
+              <span className="mb-2 block text-white/55">地域</span>
               <select
                 disabled={!value.enabled.birthRegion}
                 value={value.birthRegionId}
