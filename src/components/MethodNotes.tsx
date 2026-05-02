@@ -2,7 +2,7 @@ const notes = [
   {
     label: '前提',
     title: '比率を順に掛けるだけ',
-    body: '顔〜IQは偏差値風、年齢帯・実家・地域は係数です。相関は見ません。',
+    body: '顔〜地域まで同じ偏差値目安で掛けます。相関は見ません。',
     className: 'border-white/10 bg-night-950/35 text-star-200',
   },
   {

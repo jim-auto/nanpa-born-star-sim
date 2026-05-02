@@ -296,34 +296,37 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
 
   if (input.enabled.age) {
     const option = getSceneAgeOption(input.sceneAgeId);
+    const ratio = ratioFromTraitDeviation(option.displayDeviation);
     appendStep(
       steps,
       'age',
-      `年齢帯：${option.label}`,
-      option.ratio,
-      `${option.note} 人口の何％かというより、場当たりの係数として掛けます。`,
+      `年齢帯：${option.label}（偏差値 ${option.displayDeviation}）`,
+      ratio,
+      `${option.note} 表示の偏差値 ${option.displayDeviation} と同じ掛かり方です。`,
     );
   }
 
   if (input.enabled.familyWealth) {
     const option = getFamilyWealthOption(input.familyWealthId);
+    const ratio = ratioFromTraitDeviation(option.displayDeviation);
     appendStep(
       steps,
       'familyWealth',
-      `実家の太さ：${option.label}`,
-      option.ratio,
-      `${option.note} こちらも係数として掛けるだけです。`,
+      `実家の太さ：${option.label}（偏差値 ${option.displayDeviation}）`,
+      ratio,
+      `${option.note} 表示の偏差値 ${option.displayDeviation} と同じ掛かり方です。`,
     );
   }
 
   if (input.enabled.birthRegion) {
     const option = getBirthRegionOption(input.birthRegionId);
+    const ratio = ratioFromTraitDeviation(option.displayDeviation);
     appendStep(
       steps,
       'birthRegion',
-      `地域：${option.label}`,
-      option.ratio,
-      `${option.note} こちらも係数として掛けるだけです。`,
+      `地域：${option.label}（偏差値 ${option.displayDeviation}）`,
+      ratio,
+      `${option.note} 表示の偏差値 ${option.displayDeviation} と同じ掛かり方です。`,
     );
   }
 

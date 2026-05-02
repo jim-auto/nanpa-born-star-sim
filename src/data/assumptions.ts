@@ -23,148 +23,129 @@ export const HEIGHT_FEMALE_SD_CM = 6;
 export interface SceneAgeOption {
   id: SceneAgeId;
   label: string;
-  ratio: number;
   displayDeviation: number;
   note: string;
 }
 
-/** 年代感ごとの係数（主観フェルミ）。 */
+/** 年代感ごとの偏差値目安。 */
 export const sceneAgeOptions: SceneAgeOption[] = [
   {
     id: 'lateTeens',
     label: '10代後半',
-    ratio: 1,
     displayDeviation: 75,
-    note: '成人直前イメージ。20代前半と同じ係数に正規化（細かい差は無視）。',
+    note: '成人直前寄りの見た目イメージ。',
   },
   {
     id: 'early20s',
     label: '20代前半',
-    ratio: 1,
     displayDeviation: 75,
-    note: 'ベースライン。',
+    note: '若めに見える中心帯。',
   },
   {
     id: 'late20s',
     label: '20代後半',
-    ratio: 0.9,
     displayDeviation: 65,
-    note: 'わずかにテンポ・回復の係数を下げる仮定。',
+    note: '少し落ち着いた印象。',
   },
   {
     id: 'early30s',
     label: '30代前半',
-    ratio: 0.78,
     displayDeviation: 55,
-    note: '主観係数。',
+    note: '大人っぽさが出る帯。',
   },
   {
     id: 'late30s',
     label: '30代後半',
-    ratio: 0.64,
     displayDeviation: 45,
-    note: '同上。',
+    note: 'さらに落ち着いた印象。',
   },
   {
     id: 'early40sPlus',
     label: '40代以上',
-    ratio: 0.5,
     displayDeviation: 35,
-    note: '幅が大きい年代を1枠にまとめた粗い近似。',
+    note: '40代以上に見える帯をまとめた粗い近似。',
   },
 ];
 
 export interface FamilyWealthOption {
   id: FamilyWealthId;
   label: string;
-  ratio: number;
   displayDeviation: number;
   note: string;
 }
 
-/** 実家の太さ（係数・尾確率ではない）。 */
+/** 実家の太さの偏差値目安。 */
 export const familyWealthOptions: FamilyWealthOption[] = [
   {
     id: 'modest',
     label: '実家は頼りにくい／ギリギリ',
-    ratio: 1,
     displayDeviation: 35,
-    note: 'ベースライン。',
+    note: '余裕が少ない寄りの帯。',
   },
   {
     id: 'averageFw',
     label: '一般的な中流',
-    ratio: 0.9,
     displayDeviation: 45,
-    note: '余裕はあるが自由には使えないイメージ。',
+    note: '平均的な中流イメージ。',
   },
   {
     id: 'comfortable',
     label: '余裕あり（趣味・服にお金が回る）',
-    ratio: 0.62,
     displayDeviation: 55,
-    note: '主観フェルミ。',
+    note: 'やや余裕がある帯。',
   },
   {
     id: 'wealthy',
     label: 'かなり太い',
-    ratio: 0.32,
     displayDeviation: 65,
-    note: '上位層イメージ。',
+    note: 'かなり恵まれた帯。',
   },
   {
     id: 'dynasty',
     label: '資産家級（想像の範囲）',
-    ratio: 0.1,
     displayDeviation: 75,
-    note: 'エンタメ係数。',
+    note: 'かなり強い上位帯のイメージ。',
   },
 ];
 
 export interface BirthRegionOption {
   id: BirthRegionId;
   label: string;
-  ratio: number;
   displayDeviation: number;
   note: string;
 }
 
-/** 地域イメージ（係数）。 */
+/** 地域イメージの偏差値目安。 */
 export const birthRegionOptions: BirthRegionOption[] = [
   {
     id: 'rural',
     label: '地方（地方都市以外）',
-    ratio: 1,
     displayDeviation: 35,
-    note: 'ベースライン。',
+    note: '地方寄りの帯。',
   },
   {
     id: 'regionalCity',
     label: '地方都市',
-    ratio: 0.88,
     displayDeviation: 45,
-    note: '都会感が一段上がるイメージ。',
+    note: '地方の中では都会寄り。',
   },
   {
     id: 'metro',
     label: '大都市圏（関東・関西など）',
-    ratio: 0.68,
     displayDeviation: 55,
-    note: '人口比をざっくり。',
+    note: '大都市圏寄りの帯。',
   },
   {
     id: 'tokyo23',
     label: '東京23区ベース',
-    ratio: 0.42,
     displayDeviation: 75,
-    note: '狭い定義のため係数は強め。',
+    note: 'かなり都市寄りの帯。',
   },
   {
     id: 'abroad',
     label: '海外／多文化環境',
-    ratio: 0.52,
     displayDeviation: 65,
-    note: '母数が曖昧なので中等度に置いた係数。',
+    note: 'かなりレア寄りの帯。',
   },
 ];
 

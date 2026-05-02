@@ -106,7 +106,7 @@ export function FilterPanel({ value, onChange }: Props) {
           <div>
             <h2 className="text-lg font-semibold text-white">星モジュール</h2>
             <p className="text-sm leading-relaxed text-white/62">
-              顔〜IQ は偏差値、年齢帯・実家・地域は係数です。スライダーは {DEVIATION_MIN}–{DEVIATION_MAX}。
+              顔〜地域まで同じ偏差値目安で見ます。スライダーは {DEVIATION_MIN}–{DEVIATION_MAX}。
             </p>
           </div>
           <fieldset className="flex gap-2 rounded-xl border border-white/10 bg-night-950/40 p-1">
@@ -185,7 +185,7 @@ export function FilterPanel({ value, onChange }: Props) {
               <div>
                 <h3 className="text-sm font-semibold text-white">見た目の年齢帯</h3>
                 <p className="mt-1 text-xs leading-relaxed text-white/55">
-                  実年齢そのものではなく、見た目の印象です。係数は机上の目安です。
+                  実年齢そのものではなく、見た目の印象です。表示の偏差値どおりに効きます。
                 </p>
               </div>
               <Toggle
@@ -217,7 +217,7 @@ export function FilterPanel({ value, onChange }: Props) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-sm font-semibold text-white">実家の太さ</h3>
-                <p className="mt-1 text-xs leading-relaxed text-white/55">お金の余裕のイメージ（主観の係数）。</p>
+                <p className="mt-1 text-xs leading-relaxed text-white/55">お金の余裕のイメージ。表示の偏差値どおりに効きます。</p>
               </div>
               <Toggle
                 checked={value.enabled.familyWealth}
@@ -251,7 +251,7 @@ export function FilterPanel({ value, onChange }: Props) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-sm font-semibold text-white">地域</h3>
-                <p className="mt-1 text-xs leading-relaxed text-white/55">都市寄りか地方寄りかのイメージをラベルで分け、係数で掛けます。</p>
+                <p className="mt-1 text-xs leading-relaxed text-white/55">都市寄りか地方寄りかのイメージ。表示の偏差値どおりに効きます。</p>
               </div>
               <Toggle
                 checked={value.enabled.birthRegion}
