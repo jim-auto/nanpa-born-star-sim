@@ -105,7 +105,7 @@ export function FilterPanel({ value, onChange }: Props) {
         <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold text-white">星モジュール</h2>
-            <p className="text-sm text-white/50">
+            <p className="text-sm leading-relaxed text-white/62">
               <strong className="font-medium text-white/70">フェルミ推定</strong>
               用の入力です。顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（場当たりの係数）。すべて{' '}
               {DEVIATION_MIN}–{DEVIATION_MAX} はスライダー共通レンジです。
@@ -124,7 +124,7 @@ export function FilterPanel({ value, onChange }: Props) {
                     : 'text-white/55 hover:text-white/80'
                 }`}
               >
-                {g === 'male' ? '男性（既定）' : '女性'}
+                {g === 'male' ? '男性' : '女性'}
               </button>
             ))}
           </fieldset>
@@ -145,7 +145,7 @@ export function FilterPanel({ value, onChange }: Props) {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h3 className="text-sm font-semibold text-white">{meta.title}</h3>
-                    <p className="mt-1 text-xs text-white/45">{meta.description}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-white/55">{meta.description}</p>
                   </div>
                   <Toggle
                     checked={value.enabled[meta.id]}
@@ -186,7 +186,7 @@ export function FilterPanel({ value, onChange }: Props) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-sm font-semibold text-white">シーンの年代感</h3>
-                <p className="mt-1 text-xs text-white/45">
+                <p className="mt-1 text-xs leading-relaxed text-white/55">
                   実年齢そのものではなく、シーン上のラベルです。係数は机上の目安です。
                 </p>
               </div>
@@ -219,7 +219,7 @@ export function FilterPanel({ value, onChange }: Props) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-sm font-semibold text-white">実家の太さ</h3>
-                <p className="mt-1 text-xs text-white/45">お金の余裕のイメージ（主観の係数）。</p>
+                <p className="mt-1 text-xs leading-relaxed text-white/55">お金の余裕のイメージ（主観の係数）。</p>
               </div>
               <Toggle
                 checked={value.enabled.familyWealth}
@@ -253,7 +253,7 @@ export function FilterPanel({ value, onChange }: Props) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-sm font-semibold text-white">育ちの地域</h3>
-                <p className="mt-1 text-xs text-white/45">都会感や育ちのイメージをラベルで雑に分け、係数で掛けます。</p>
+                <p className="mt-1 text-xs leading-relaxed text-white/55">都会感や育ちのイメージをラベルで雑に分け、係数で掛けます。</p>
               </div>
               <Toggle
                 checked={value.enabled.birthRegion}

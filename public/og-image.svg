@@ -1,0 +1,25 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="100" y1="40" x2="1100" y2="590" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1D1731"/>
+      <stop offset="1" stop-color="#0B0A12"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(402 104) rotate(45.777) scale(530.833 746.622)">
+      <stop stop-color="#B388FF" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#B388FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" rx="32" fill="url(#bg)"/>
+  <rect width="1200" height="630" rx="32" fill="url(#glow)"/>
+  <circle cx="1013" cy="136" r="88" fill="#B388FF" fill-opacity="0.15"/>
+  <circle cx="1063" cy="198" r="14" fill="#D4B8FF"/>
+  <circle cx="128" cy="143" r="10" fill="#D4B8FF" fill-opacity="0.8"/>
+  <circle cx="220" cy="96" r="6" fill="#9D6BFF"/>
+  <circle cx="904" cy="520" r="9" fill="#D4B8FF" fill-opacity="0.75"/>
+  <text x="88" y="145" fill="#D4B8FF" font-family="DM Sans, Hiragino Sans, Yu Gothic UI, sans-serif" font-size="28" font-weight="700" letter-spacing="4">Fermi-style fun tool</text>
+  <text x="88" y="278" fill="#FFFFFF" font-family="DM Sans, Hiragino Sans, Yu Gothic UI, sans-serif" font-size="72" font-weight="700">生まれた星偏差値診断</text>
+  <text x="88" y="354" fill="#ECE8F7" font-family="DM Sans, Hiragino Sans, Yu Gothic UI, sans-serif" font-size="34" font-weight="500">顔・身長・IQ・実家・地域などを</text>
+  <text x="88" y="404" fill="#ECE8F7" font-family="DM Sans, Hiragino Sans, Yu Gothic UI, sans-serif" font-size="34" font-weight="500">机上で掛け合わせる 1 ページ完結のネタ診断</text>
+  <rect x="88" y="462" width="318" height="66" rx="33" fill="#9D6BFF" fill-opacity="0.18" stroke="#B388FF" stroke-opacity="0.45"/>
+  <text x="122" y="505" fill="#FFFFFF" font-family="DM Sans, Hiragino Sans, Yu Gothic UI, sans-serif" font-size="28" font-weight="700">GitHub Pages</text>
+</svg>

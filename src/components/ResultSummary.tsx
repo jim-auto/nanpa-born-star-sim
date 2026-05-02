@@ -38,37 +38,43 @@ export function ResultSummary({ result }: Props) {
     <section className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs tracking-wide text-white/45">生まれた星偏差値</p>
-          <p className="mt-0.5 text-[0.65rem] text-white/35">
+          <p className="text-xs tracking-wide text-white/58">生まれた星偏差値</p>
+          <p className="mt-0.5 text-[0.7rem] text-white/52">
             フェルミ推定の目安（このアプリ独自の計算です。統計の公式値ではありません）
           </p>
           <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
             {result.geneticDeviation.toFixed(1)}
           </p>
-          <p className="mt-2 text-sm text-white/65">
-            <span className="text-white/45">日本人の検定順位をそのまま出しているわけではなく、</span>
+          <p className="mt-2 text-sm text-white/72">
+            <span className="text-white/58">日本人の検定順位をそのまま出しているわけではなく、</span>
             スライダーと同じ<strong className="font-medium text-white/80">「平均50・まわり10くらい」</strong>
             のイメージに直すと<strong className="font-medium text-star-200">{result.modelTierShortJa}</strong>
           </p>
-          <p className="mt-1 text-[0.65rem] leading-relaxed text-white/32">
+          <p className="mt-1 text-[0.75rem] leading-relaxed text-white/55">
             たくさんの条件を1本のスコアに丸めたうえでの目安です。身長など一部は日本人向けの平均・ばらつきを参照しています。
           </p>
-          <p className="mt-2 text-sm text-white/55">
+          <p className="mt-2 text-sm text-white/66">
             使っている条件を<strong className="font-medium text-white/75">全部そろえたときの割合</strong>（想像）{' '}
             <span className="font-medium text-white/85">{formatPercent(result.finalRatio)}</span>
           </p>
-          <p className="mt-1 text-xs leading-relaxed text-white/38">
+          <p className="mt-1 text-xs leading-relaxed text-white/55">
             <strong className="font-medium text-white/50">フェルミ推定</strong>
             として、各項目に「こんな人がどれくらいいそう」という比率を付け、それを
             <strong className="font-medium text-white/55">順に掛け合わせた数</strong>
             です。
           </p>
+          <a
+            href="#method-notes"
+            className="mt-3 inline-flex rounded-full border border-star-300/25 bg-star-500/10 px-3 py-1 text-xs font-medium text-star-100 transition hover:border-star-300/45 hover:bg-star-500/20"
+          >
+            前提と数字を見る
+          </a>
         </div>
         <div
           className={`rounded-xl px-4 py-3 ring-1 backdrop-blur-sm ${tone.ring} ${tone.bg}`}
         >
           <p className={`text-sm font-medium ${tone.text}`}>{result.rarityLabel}</p>
-          <p className="mt-1 text-xs text-white/45">
+          <p className="mt-1 text-xs text-white/58">
             使っているモジュール {result.enabledFactorCount} 個・身長の目安は{result.genderLabel}基準
           </p>
         </div>
