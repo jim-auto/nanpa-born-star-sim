@@ -58,6 +58,8 @@ export interface GeneticEstimationResult {
   genderLabel: string;
   finalRatio: number;
   geneticDeviation: number;
+  /** N(50,10) 片側に読み替えたときの「約上位/下位〇%」短文（フェルミ・順位の代替ではない） */
+  modelTierShortJa: string;
   steps: GeneticStep[];
   enabledFactorCount: number;
   rarityLabel: string;

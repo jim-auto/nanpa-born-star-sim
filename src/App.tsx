@@ -15,17 +15,18 @@ export default function App() {
   return (
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-10 pb-16 sm:px-6 lg:px-8">
       <header className="space-y-4">
-        <p className="text-xs font-semibold tracking-[0.25em] text-star-300 uppercase">
-          Nanpa scene · Fermi toy
+        <p className="text-xs font-semibold tracking-[0.2em] text-star-300">
+          ナンパ界隈ネタ · <span className="text-star-200">フェルミ推定</span>
         </p>
         <h1 className="text-balance text-3xl font-semibold text-white sm:text-4xl">
           生まれた星偏差値診断
         </h1>
         <p className="max-w-3xl text-pretty text-sm leading-relaxed text-white/60">
+          <strong className="font-medium text-white/85">これはフェルミ推定です。</strong>
           <strong className="font-medium text-white/80">顔・身長・IQ・実家・地域</strong>
           などをバラバラに拾い、それぞれの比率を<strong className="font-medium text-white/80">順に掛け合わせただけ</strong>
-          の机上診断です。話し方・ノリ・項目どうしの関係は無視。
-          <span className="text-white/45">真面目な予測ではなく暇つぶしのフェルミです。</span>
+          の机上計算です。桁やオーダーを眺めるためのもので、項目どうしの関係は無視します。
+          <span className="text-white/45">統計の公式予測や実測の代替ではありません（娯楽）。</span>
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <PresetButtons onSelect={setInput} />
@@ -53,7 +54,8 @@ export default function App() {
 
       <footer className="border-t border-white/10 pt-6 text-xs text-white/40">
         <p>
-          医療・恋愛・道徳の助言ではありません。数値は{' '}
+          本ツールは<strong className="font-medium text-white/55">フェルミ推定</strong>
+          による娯楽です。医療・恋愛・道徳の助言ではありません。数値は{' '}
           <code className="rounded bg-white/10 px-1 py-0.5 text-[0.7rem] text-star-200">
             docs/assumptions.md
           </code>{' '}

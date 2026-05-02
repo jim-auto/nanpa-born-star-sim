@@ -46,7 +46,7 @@ const DEVIATION_MODULES: DeviationModuleConfig[] = [
   },
   { id: 'physique', title: '体格偏差値', description: '骨格・筋肉イメージ（尾モデル）', field: 'physiqueDeviation', hint: 'none' },
   { id: 'athletic', title: '運動神経偏差値', description: '協調・瞬発など（尾モデル）', field: 'athleticDeviation', hint: 'none' },
-  { id: 'voiceAura', title: '声・オーラ偏差値', description: '主観強め・同一スケールの尾仮定', field: 'voiceAuraDeviation', hint: 'none' },
+  { id: 'voiceAura', title: '声偏差値', description: 'トーンや話し方の印象など（主観強め・尾モデル）', field: 'voiceAuraDeviation', hint: 'none' },
   {
     id: 'iq',
     title: 'IQ（偏差値スライダー）',
@@ -100,8 +100,9 @@ export function FilterPanel({ value, onChange }: Props) {
           <div>
             <h2 className="text-lg font-semibold text-white">星モジュール</h2>
             <p className="text-sm text-white/50">
-              顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（係数）。すべて {DEVIATION_MIN}–{DEVIATION_MAX}
-              はスライダー共通レンジです。
+              <strong className="font-medium text-white/70">フェルミ推定</strong>
+              用の入力です。顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（係数）。すべて{' '}
+              {DEVIATION_MIN}–{DEVIATION_MAX} はスライダー共通レンジです。
             </p>
           </div>
           <fieldset className="flex gap-2 rounded-xl border border-white/10 bg-night-950/40 p-1">
@@ -178,7 +179,7 @@ export function FilterPanel({ value, onChange }: Props) {
           <article className="rounded-xl border border-white/10 bg-night-950/35 p-4 ring-1 ring-amber-500/15">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="text-sm font-semibold text-white">見た目・スタミナの年代感</h3>
+                <h3 className="text-sm font-semibold text-white">シーンの年代感</h3>
                 <p className="mt-1 text-xs text-white/45">
                   実年齢そのものではなくシーン上のラベル。係数はフェルミ。
                 </p>

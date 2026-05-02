@@ -129,7 +129,7 @@ function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone:
     return { rarityLabel: '条件を足すと、だいぶ絞られるイメージ', rarityTone: 'narrow' };
   }
   return {
-    rarityLabel: 'このシミュ上では、めずらしすぎない組み合わせ（話し方は見ていません）',
+    rarityLabel: 'このシミュ上では、めずらしすぎない組み合わせ',
     rarityTone: 'reasonable',
   };
 }
@@ -138,6 +138,33 @@ function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone:
 export function ratioFromTraitDeviation(deviation: number): number {
   const d = clampDeviation(deviation);
   return tailRatioNormal(d, TRAIT_DEV_MEAN, TRAIT_DEV_SD);
+}
+
+/** 表示用：合成スコアを N(TRAIT_DEV_MEAN, TRAIT_DEV_SD) の「高いほど良い」1次元に押し直したときの片側％ラベル */
+export function modelTierShortJapanese(deviation: number): string {
+  const d = clampDeviation(deviation);
+  const pGe = ratioFromTraitDeviation(d);
+  if (pGe >= 0.35 && pGe <= 0.65) {
+    return '中央付近';
+  }
+  if (d >= TRAIT_DEV_MEAN) {
+    return `約上位 ${formatTierPercentPiece(pGe * 100)}`;
+  }
+  const pLo = (1 - pGe) * 100;
+  return `約下位 ${formatTierPercentPiece(pLo)}`;
+}
+
+function formatTierPercentPiece(x: number): string {
+  if (x >= 10) {
+    return `${x.toFixed(0)}%`;
+  }
+  if (x >= 1) {
+    return `${x.toFixed(1)}%`;
+  }
+  if (x >= 0.1) {
+    return `${x.toFixed(2)}%`;
+  }
+  return `${x.toPrecision(2)}%`;
 }
 
 /** 身長偏差値から目安 cm（表示用）。z=(D−50)/10 を身長の正規近似に写像。 */
@@ -179,7 +206,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
       label: `ベース（${genderLabelJp}・星モジュールを独立に掛け合わせる）`,
       ratio: 1,
       remaining: 1,
-      note: '暇つぶし用のフェルミ。項目どうしの関係は無視。',
+      note: 'フェルミ推定の独立近似。項目どうしの相関は入れていません。',
     },
   ];
 
@@ -240,7 +267,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'voiceAura',
-      `声・オーラ偏差値 ${d} 以上`,
+      `声偏差値 ${d} 以上`,
       ratio,
       `計測困難なのでエンタメ寄り。分布は他因子と同型の仮定。`,
     );
@@ -305,6 +332,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     genderLabel: genderLabelJp,
     finalRatio,
     geneticDeviation,
+    modelTierShortJa: modelTierShortJapanese(geneticDeviation),
     steps,
     enabledFactorCount: steps.length - 1,
     rarityLabel: rarity.rarityLabel,

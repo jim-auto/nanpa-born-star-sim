@@ -39,17 +39,29 @@ export function ResultSummary({ result }: Props) {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs tracking-wide text-white/45 uppercase">生まれた星偏差値</p>
-          <p className="mt-0.5 text-[0.65rem] text-white/35">このアプリだけの目安（統計の公式値ではありません）</p>
+          <p className="mt-0.5 text-[0.65rem] text-white/35">
+            フェルミ推定の目安（このアプリ内スキーム・統計の公式値ではありません）
+          </p>
           <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
             {result.geneticDeviation.toFixed(1)}
+          </p>
+          <p className="mt-2 text-sm text-white/65">
+            <span className="text-white/45">日本人に限った検定順位ではなく、</span>
+            スライダーと同じ<strong className="font-medium text-white/80"> N(50,10) の片側イメージ</strong>
+            だと<strong className="font-medium text-star-200">{result.modelTierShortJa}</strong>
+          </p>
+          <p className="mt-1 text-[0.65rem] leading-relaxed text-white/32">
+            合成スコアを1本の正規尾に直した目安です。身長など一部モジュールは日本人向けの平均・ばらつきを参照しています。
           </p>
           <p className="mt-2 text-sm text-white/55">
             オンにした条件を<strong className="font-medium text-white/75">全部そろえたときの割合</strong>（想像）{' '}
             <span className="font-medium text-white/85">{formatPercent(result.finalRatio)}</span>
           </p>
           <p className="mt-1 text-xs leading-relaxed text-white/38">
-            各項目に「こんな人がどれくらいいそう」という比率を付け、それを<strong className="font-medium text-white/55">順に掛け合わせた数</strong>
-            です。会話のうまさや、その日のノリは含みません。
+            <strong className="font-medium text-white/50">フェルミ推定</strong>
+            として、各項目に「こんな人がどれくらいいそう」という比率を付け、それを
+            <strong className="font-medium text-white/55">順に掛け合わせた数</strong>
+            です。
           </p>
         </div>
         <div

@@ -12,18 +12,25 @@ const allOn = {
   birthRegion: true,
 } as const;
 
-export const defaultGeneticInput: GeneticInput = {
+/** スライダー50・中立めのプルダウン。起動時の既定とも共有 */
+export const presetAverageBundle: GeneticInput = {
   gender: 'male',
   enabled: { ...allOn },
-  faceDeviation: 52,
-  heightDeviation: 52,
-  physiqueDeviation: 52,
-  athleticDeviation: 52,
-  voiceAuraDeviation: 52,
-  iqDeviation: 52,
-  sceneAgeId: 'early20s',
-  familyWealthId: 'comfortable',
-  birthRegionId: 'metro',
+  faceDeviation: 50,
+  heightDeviation: 50,
+  physiqueDeviation: 50,
+  athleticDeviation: 50,
+  voiceAuraDeviation: 50,
+  iqDeviation: 50,
+  sceneAgeId: 'late20s',
+  familyWealthId: 'averageFw',
+  birthRegionId: 'regionalCity',
+};
+
+/** アプリ初回表示＝「平均の星」と同じ内容（別オブジェクト） */
+export const defaultGeneticInput: GeneticInput = {
+  ...presetAverageBundle,
+  enabled: { ...presetAverageBundle.enabled },
 };
 
 export const presetGodGenes: GeneticInput = {
@@ -38,20 +45,6 @@ export const presetGodGenes: GeneticInput = {
   sceneAgeId: 'lateTeens',
   familyWealthId: 'dynasty',
   birthRegionId: 'tokyo23',
-};
-
-export const presetAverageBundle: GeneticInput = {
-  gender: 'male',
-  enabled: { ...allOn },
-  faceDeviation: 50,
-  heightDeviation: 50,
-  physiqueDeviation: 50,
-  athleticDeviation: 50,
-  voiceAuraDeviation: 50,
-  iqDeviation: 50,
-  sceneAgeId: 'late20s',
-  familyWealthId: 'averageFw',
-  birthRegionId: 'regionalCity',
 };
 
 export const presetMortalGenes: GeneticInput = {
@@ -69,7 +62,6 @@ export const presetMortalGenes: GeneticInput = {
 };
 
 export const presets = [
-  { id: 'default', label: '初期値', input: defaultGeneticInput },
   { id: 'god', label: '神の星', input: presetGodGenes },
   { id: 'average', label: '平均の星', input: presetAverageBundle },
   { id: 'mortal', label: '凡人の星', input: presetMortalGenes },
