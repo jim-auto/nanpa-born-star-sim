@@ -3,7 +3,6 @@ import {
   approximateHeightCmFromDeviation,
   approximateIqFromDeviation,
   formatPercent,
-  perFactorEquivalentRatio,
 } from '../utils/estimator';
 import {
   getBirthRegionOption,
@@ -56,7 +55,6 @@ type SettingItem = {
 
 export function ResultSummary({ result, input }: Props) {
   const tone = toneStyles[result.rarityTone];
-  const perFactorRatio = perFactorEquivalentRatio(result.finalRatio, result.enabledFactorCount);
   const deviationItems: SettingItem[] = [];
   if (input.enabled.face) {
     deviationItems.push({ id: 'face', label: '顔', value: `${input.faceDeviation}`, detail: null });
@@ -119,21 +117,11 @@ export function ResultSummary({ result, input }: Props) {
       <p className="text-xs tracking-wide text-white/58">生まれた星偏差値</p>
       <p className="mt-0.5 text-[0.7rem] text-white/52">このアプリ独自の目安です。</p>
 
-      <div className="mt-4 grid gap-3 lg:grid-cols-[11rem,minmax(0,1fr),15rem]">
+      <div className="mt-4 grid gap-3 lg:grid-cols-[11rem,minmax(0,1fr)]">
         <div className="rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
           <p className="text-[0.7rem] tracking-wide text-white/52">偏差値</p>
           <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
             {result.geneticDeviation.toFixed(1)}
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-star-300/18 bg-star-500/8 px-4 py-3">
-          <p className="text-[0.7rem] tracking-wide text-white/52">1項目換算の帯</p>
-          <p className="mt-1 text-2xl font-semibold tracking-tight text-star-100 sm:text-[1.9rem]">
-            {result.modelTierShortJa}
-          </p>
-          <p className="mt-1 text-xs leading-relaxed text-white/60">
-            全{result.enabledFactorCount}項目の {formatPercent(result.finalRatio)} を均すと、1項目あたり {formatPercent(perFactorRatio)} 残るくらいの帯です。
           </p>
         </div>
 
@@ -149,7 +137,7 @@ export function ResultSummary({ result, input }: Props) {
         <div className="rounded-xl border border-white/10 bg-night-950/30 px-4 py-3">
           <p className="text-[0.7rem] tracking-wide text-white/52">総合スコア</p>
           <p className="mt-1 text-sm leading-relaxed text-white/72">
-            顔・身長・IQ などをまとめて見た目安です。
+            顔・身長・IQ などをまとめた、このアプリ独自の目安です。
           </p>
         </div>
 
@@ -159,7 +147,7 @@ export function ResultSummary({ result, input }: Props) {
             {formatPercent(result.finalRatio)}
           </p>
           <p className="mt-1 text-xs leading-relaxed text-white/55">
-            これは全{result.enabledFactorCount}項目をまとめて掛けた割合です。上の帯とは別の数字です。
+            いまの設定に当てはまりそうな割合です。
           </p>
         </div>
       </div>

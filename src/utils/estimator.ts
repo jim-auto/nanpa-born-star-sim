@@ -140,45 +140,10 @@ export function ratioFromTraitDeviation(deviation: number): number {
   return tailRatioNormal(d, TRAIT_DEV_MEAN, TRAIT_DEV_SD);
 }
 
-/** 尾確率を、同じ「平均50・幅10」スケールの偏差値風表示に戻す。 */
-export function equivalentDeviationFromRatio(ratio: number): number {
-  const p = clamp(ratio, 1e-15, 1 - 1e-15);
-  const z = inverseStandardNormal(1 - p);
-  const raw = 50 + 10 * z;
-  return clamp(raw, DEVIATION_MIN, DEVIATION_MAX);
-}
-
-export function perFactorEquivalentRatio(finalRatio: number, enabledFactorCount: number): number {
+function perFactorEquivalentRatio(finalRatio: number, enabledFactorCount: number): number {
   const n = Math.max(1, enabledFactorCount);
   const clampedJoint = clamp(finalRatio, 1e-200, 1 - 1e-15);
   return Math.pow(clampedJoint, 1 / n);
-}
-
-/** 表示用：合成スコアを「平均50・幅10」と同じ目安尺に直したときの、おおよその上位／下位％ラベル */
-export function modelTierShortJapanese(deviation: number): string {
-  const d = clampDeviation(deviation);
-  const pGe = ratioFromTraitDeviation(d);
-  if (pGe >= 0.35 && pGe <= 0.65) {
-    return '中央付近';
-  }
-  if (d >= TRAIT_DEV_MEAN) {
-    return `約上位 ${formatTierPercentPiece(pGe * 100)}`;
-  }
-  const pLo = (1 - pGe) * 100;
-  return `約下位 ${formatTierPercentPiece(pLo)}`;
-}
-
-function formatTierPercentPiece(x: number): string {
-  if (x >= 10) {
-    return `${x.toFixed(0)}%`;
-  }
-  if (x >= 1) {
-    return `${x.toFixed(1)}%`;
-  }
-  if (x >= 0.1) {
-    return `${x.toFixed(2)}%`;
-  }
-  return `${x.toPrecision(2)}%`;
 }
 
 /** 身長偏差値から目安 cm（表示用）。スライダーと身長の平均・幅をつなぐ。 */
@@ -347,7 +312,6 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     genderLabel: genderLabelJp,
     finalRatio,
     geneticDeviation,
-    modelTierShortJa: modelTierShortJapanese(geneticDeviation),
     steps,
     enabledFactorCount: steps.length - 1,
     rarityLabel: rarity.rarityLabel,
