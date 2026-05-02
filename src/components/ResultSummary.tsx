@@ -4,6 +4,9 @@ import {
   formatPercent,
 } from '../utils/estimator';
 import {
+  birthRegionOptions,
+  familyWealthOptions,
+  sceneAgeOptions,
   getBirthRegionOption,
   getFamilyWealthOption,
   getSceneAgeOption,
@@ -58,21 +61,39 @@ export function ResultSummary({ result, input }: Props) {
       ? {
           id: 'age' as const,
           label: '年代',
-          value: Math.round(equivalentDeviationFromCoefficient(getSceneAgeOption(input.sceneAgeId).ratio)),
+          value: Math.round(
+            equivalentDeviationFromCoefficient(
+              getSceneAgeOption(input.sceneAgeId).ratio,
+              sceneAgeOptions.map((option) => option.ratio),
+              false,
+            ),
+          ),
         }
       : null,
     input.enabled.familyWealth
       ? {
           id: 'familyWealth' as const,
           label: '実家',
-          value: Math.round(equivalentDeviationFromCoefficient(getFamilyWealthOption(input.familyWealthId).ratio)),
+          value: Math.round(
+            equivalentDeviationFromCoefficient(
+              getFamilyWealthOption(input.familyWealthId).ratio,
+              familyWealthOptions.map((option) => option.ratio),
+              true,
+            ),
+          ),
         }
       : null,
     input.enabled.birthRegion
       ? {
           id: 'birthRegion' as const,
           label: '地域',
-          value: Math.round(equivalentDeviationFromCoefficient(getBirthRegionOption(input.birthRegionId).ratio)),
+          value: Math.round(
+            equivalentDeviationFromCoefficient(
+              getBirthRegionOption(input.birthRegionId).ratio,
+              birthRegionOptions.map((option) => option.ratio),
+              true,
+            ),
+          ),
         }
       : null,
   ].filter((item): item is { id: DeviationConditionId; label: string; value: number } => item !== null);

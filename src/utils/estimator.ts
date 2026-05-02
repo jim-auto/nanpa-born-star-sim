@@ -148,9 +148,19 @@ export function equivalentDeviationFromRatio(ratio: number): number {
   return clamp(raw, DEVIATION_MIN, DEVIATION_MAX);
 }
 
-/** 係数 1.0 を中立（50付近）として、偏差値風に見える値へ換算する。 */
-export function equivalentDeviationFromCoefficient(ratio: number): number {
-  const p = clamp(ratio * 0.5, 1e-15, 0.5);
+/** 係数をカテゴリ内の順位ベースで、偏差値風に見える値へ換算する。 */
+export function equivalentDeviationFromCoefficient(
+  ratio: number,
+  allRatios: readonly number[],
+  prefersLowerRatio: boolean,
+): number {
+  const uniqueRatios = [...new Set(allRatios)].sort((a, b) => {
+    return prefersLowerRatio ? a - b : b - a;
+  });
+  const rank = uniqueRatios.findIndex((value) => value === ratio);
+  const clampedRank = rank >= 0 ? rank : uniqueRatios.length - 1;
+  const percentile = 1 - (clampedRank + 0.5) / Math.max(uniqueRatios.length, 1);
+  const p = clamp(percentile, 1e-15, 1 - 1e-15);
   const z = inverseStandardNormal(1 - p);
   const raw = 50 + 10 * z;
   return clamp(raw, DEVIATION_MIN, DEVIATION_MAX);
