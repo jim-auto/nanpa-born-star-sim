@@ -3,6 +3,7 @@ import {
   approximateHeightCmFromDeviation,
   approximateIqFromDeviation,
   formatPercent,
+  perFactorEquivalentRatio,
 } from '../utils/estimator';
 import {
   getBirthRegionOption,
@@ -55,6 +56,7 @@ type SettingItem = {
 
 export function ResultSummary({ result, input }: Props) {
   const tone = toneStyles[result.rarityTone];
+  const perFactorRatio = perFactorEquivalentRatio(result.finalRatio, result.enabledFactorCount);
   const deviationItems: SettingItem[] = [];
   if (input.enabled.face) {
     deviationItems.push({ id: 'face', label: '顔', value: `${input.faceDeviation}`, detail: null });
@@ -126,12 +128,12 @@ export function ResultSummary({ result, input }: Props) {
         </div>
 
         <div className="rounded-xl border border-star-300/18 bg-star-500/8 px-4 py-3">
-          <p className="text-[0.7rem] tracking-wide text-white/52">だいたいの帯</p>
+          <p className="text-[0.7rem] tracking-wide text-white/52">1項目換算の帯</p>
           <p className="mt-1 text-2xl font-semibold tracking-tight text-star-100 sm:text-[1.9rem]">
             {result.modelTierShortJa}
           </p>
           <p className="mt-1 text-xs leading-relaxed text-white/60">
-            実際の順位ではなく、偏差値っぽく見やすくした目安です。
+            全{result.enabledFactorCount}項目の {formatPercent(result.finalRatio)} を均すと、1項目あたり {formatPercent(perFactorRatio)} 残るくらいの帯です。
           </p>
         </div>
 
@@ -157,7 +159,7 @@ export function ResultSummary({ result, input }: Props) {
             {formatPercent(result.finalRatio)}
           </p>
           <p className="mt-1 text-xs leading-relaxed text-white/55">
-            条件を足すほど、どれくらい絞られるかのイメージです。
+            これは全{result.enabledFactorCount}項目をまとめて掛けた割合です。上の帯とは別の数字です。
           </p>
         </div>
       </div>

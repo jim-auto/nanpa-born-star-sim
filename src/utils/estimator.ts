@@ -148,6 +148,12 @@ export function equivalentDeviationFromRatio(ratio: number): number {
   return clamp(raw, DEVIATION_MIN, DEVIATION_MAX);
 }
 
+export function perFactorEquivalentRatio(finalRatio: number, enabledFactorCount: number): number {
+  const n = Math.max(1, enabledFactorCount);
+  const clampedJoint = clamp(finalRatio, 1e-200, 1 - 1e-15);
+  return Math.pow(clampedJoint, 1 / n);
+}
+
 /** 表示用：合成スコアを「平均50・幅10」と同じ目安尺に直したときの、おおよその上位／下位％ラベル */
 export function modelTierShortJapanese(deviation: number): string {
   const d = clampDeviation(deviation);
@@ -197,9 +203,7 @@ export function approximateIqFromDeviation(deviation: number): number {
  * 各因子が中央（尾～0.5）なら出力が～50付近に寄る。
  */
 export function geneticDeviationFromRatio(finalRatio: number, enabledFactorCount: number): number {
-  const n = Math.max(1, enabledFactorCount);
-  const clampedJoint = clamp(finalRatio, 1e-200, 1 - 1e-15);
-  const perFactorEquivalent = Math.pow(clampedJoint, 1 / n);
+  const perFactorEquivalent = perFactorEquivalentRatio(finalRatio, enabledFactorCount);
   const p = clamp(perFactorEquivalent, 1e-15, 1 - 1e-15);
   const z = inverseStandardNormal(1 - p);
   const raw = 50 + 10 * z;
