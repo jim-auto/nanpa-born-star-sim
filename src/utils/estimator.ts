@@ -140,6 +140,14 @@ export function ratioFromTraitDeviation(deviation: number): number {
   return tailRatioNormal(d, TRAIT_DEV_MEAN, TRAIT_DEV_SD);
 }
 
+/** 係数や尾確率を、同じ「平均50・幅10」スケールの偏差値風表示に戻す。 */
+export function equivalentDeviationFromRatio(ratio: number): number {
+  const p = clamp(ratio, 1e-15, 1 - 1e-15);
+  const z = inverseStandardNormal(1 - p);
+  const raw = 50 + 10 * z;
+  return clamp(raw, DEVIATION_MIN, DEVIATION_MAX);
+}
+
 /** 表示用：合成スコアを「平均50・幅10」と同じ目安尺に直したときの、おおよその上位／下位％ラベル */
 export function modelTierShortJapanese(deviation: number): string {
   const d = clampDeviation(deviation);

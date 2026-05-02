@@ -1,5 +1,13 @@
 import type { GeneticConditionId, GeneticEstimationResult, GeneticInput, RarityTone } from '../types';
-import { formatPercent } from '../utils/estimator';
+import {
+  equivalentDeviationFromRatio,
+  formatPercent,
+} from '../utils/estimator';
+import {
+  getBirthRegionOption,
+  getFamilyWealthOption,
+  getSceneAgeOption,
+} from '../data/assumptions';
 
 const toneStyles: Record<
   RarityTone,
@@ -34,7 +42,7 @@ interface Props {
 
 type DeviationConditionId = Extract<
   GeneticConditionId,
-  'face' | 'height' | 'physique' | 'athletic' | 'voiceAura' | 'iq'
+  'face' | 'height' | 'physique' | 'athletic' | 'voiceAura' | 'iq' | 'age' | 'familyWealth' | 'birthRegion'
 >;
 
 export function ResultSummary({ result, input }: Props) {
@@ -46,6 +54,27 @@ export function ResultSummary({ result, input }: Props) {
     input.enabled.athletic ? { id: 'athletic' as const, label: '運動', value: input.athleticDeviation } : null,
     input.enabled.voiceAura ? { id: 'voiceAura' as const, label: '声', value: input.voiceAuraDeviation } : null,
     input.enabled.iq ? { id: 'iq' as const, label: 'IQ', value: input.iqDeviation } : null,
+    input.enabled.age
+      ? {
+          id: 'age' as const,
+          label: '年代',
+          value: Math.round(equivalentDeviationFromRatio(getSceneAgeOption(input.sceneAgeId).ratio)),
+        }
+      : null,
+    input.enabled.familyWealth
+      ? {
+          id: 'familyWealth' as const,
+          label: '実家',
+          value: Math.round(equivalentDeviationFromRatio(getFamilyWealthOption(input.familyWealthId).ratio)),
+        }
+      : null,
+    input.enabled.birthRegion
+      ? {
+          id: 'birthRegion' as const,
+          label: '地域',
+          value: Math.round(equivalentDeviationFromRatio(getBirthRegionOption(input.birthRegionId).ratio)),
+        }
+      : null,
   ].filter((item): item is { id: DeviationConditionId; label: string; value: number } => item !== null);
 
   return (
@@ -100,7 +129,7 @@ export function ResultSummary({ result, input }: Props) {
 
       <div className="mt-4 rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-[0.7rem] tracking-wide text-white/52">いまの偏差値</p>
+          <p className="text-[0.7rem] tracking-wide text-white/52">いまの偏差値（係数は換算）</p>
           <a
             href="#method-notes"
             className="inline-flex rounded-full border border-star-300/25 bg-star-500/10 px-3 py-1 text-xs font-medium text-star-100 transition hover:border-star-300/45 hover:bg-star-500/20"
