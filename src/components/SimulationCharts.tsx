@@ -107,7 +107,7 @@ export function SimulationCharts({ steps }: Props) {
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-night-900/60 p-5">
-        <h3 className="text-sm font-semibold text-white">ログ幅（−log₁₀ 比）：寄与の目安</h3>
+        <h3 className="text-sm font-semibold text-white">条件ごとの寄与（−log₁₀・割合がどれだけ下がったか）</h3>
         <ul className="mt-4 space-y-3">
           {contributions.map((item) => (
             <li key={item.id}>

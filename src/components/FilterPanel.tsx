@@ -101,7 +101,7 @@ export function FilterPanel({ value, onChange }: Props) {
             <h2 className="text-lg font-semibold text-white">星モジュール</h2>
             <p className="text-sm text-white/50">
               <strong className="font-medium text-white/70">フェルミ推定</strong>
-              用の入力です。顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（係数）。すべて{' '}
+              用の入力です。顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（係数で掛けます）。すべて{' '}
               {DEVIATION_MIN}–{DEVIATION_MAX} はスライダー共通レンジです。
             </p>
           </div>
@@ -181,7 +181,7 @@ export function FilterPanel({ value, onChange }: Props) {
               <div>
                 <h3 className="text-sm font-semibold text-white">シーンの年代感</h3>
                 <p className="mt-1 text-xs text-white/45">
-                  実年齢そのものではなくシーン上のラベル。係数はフェルミ。
+                  実年齢そのものではなく、シーン上のラベルです。係数は机上の目安です。
                 </p>
               </div>
               <Toggle
@@ -213,7 +213,7 @@ export function FilterPanel({ value, onChange }: Props) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-sm font-semibold text-white">実家の太さ</h3>
-                <p className="mt-1 text-xs text-white/45">おカネの余裕イメージ（主観係数）。</p>
+                <p className="mt-1 text-xs text-white/45">お金の余裕のイメージ（主観の係数）。</p>
               </div>
               <Toggle
                 checked={value.enabled.familyWealth}
@@ -222,7 +222,7 @@ export function FilterPanel({ value, onChange }: Props) {
               />
             </div>
             <label className="mt-4 block text-xs text-white/55">
-              <span className="mb-2 block text-white/55">ギャップ感</span>
+              <span className="mb-2 block text-white/55">余裕のイメージ</span>
               <select
                 disabled={!value.enabled.familyWealth}
                 value={value.familyWealthId}

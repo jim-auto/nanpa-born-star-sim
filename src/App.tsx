@@ -30,7 +30,7 @@ export default function App() {
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <PresetButtons onSelect={setInput} />
-          <p className="text-xs text-white/40">プリセットは初期入力をまとめて上書きします。</p>
+          <p className="text-xs text-white/40">プリセットを押すと、入力がまとめて上書きされます。</p>
         </div>
       </header>
 

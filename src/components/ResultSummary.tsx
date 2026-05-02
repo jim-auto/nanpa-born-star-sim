@@ -38,20 +38,20 @@ export function ResultSummary({ result }: Props) {
     <section className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs tracking-wide text-white/45 uppercase">生まれた星偏差値</p>
+          <p className="text-xs tracking-wide text-white/45">生まれた星偏差値</p>
           <p className="mt-0.5 text-[0.65rem] text-white/35">
-            フェルミ推定の目安（このアプリ内スキーム・統計の公式値ではありません）
+            フェルミ推定の目安（このアプリ独自の計算です。統計の公式値ではありません）
           </p>
           <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
             {result.geneticDeviation.toFixed(1)}
           </p>
           <p className="mt-2 text-sm text-white/65">
-            <span className="text-white/45">日本人に限った検定順位ではなく、</span>
+            <span className="text-white/45">日本人の検定順位をそのまま出しているわけではなく、</span>
             スライダーと同じ<strong className="font-medium text-white/80"> N(50,10) の片側イメージ</strong>
-            だと<strong className="font-medium text-star-200">{result.modelTierShortJa}</strong>
+            に直すと<strong className="font-medium text-star-200">{result.modelTierShortJa}</strong>
           </p>
           <p className="mt-1 text-[0.65rem] leading-relaxed text-white/32">
-            合成スコアを1本の正規尾に直した目安です。身長など一部モジュールは日本人向けの平均・ばらつきを参照しています。
+            合成スコアを1本の正規分布の尾に直した目安です。身長など一部は日本人向けの平均・ばらつきを参照しています。
           </p>
           <p className="mt-2 text-sm text-white/55">
             オンにした条件を<strong className="font-medium text-white/75">全部そろえたときの割合</strong>（想像）{' '}
