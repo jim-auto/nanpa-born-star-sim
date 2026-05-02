@@ -133,7 +133,7 @@ export interface BirthRegionOption {
 export const birthRegionOptions: BirthRegionOption[] = [
   {
     id: 'rural',
-    label: '地方（それ以外）',
+    label: '地方（地方都市以外）',
     ratio: 1,
     displayDeviation: 35,
     note: 'ベースライン。',
