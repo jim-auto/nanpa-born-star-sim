@@ -163,11 +163,15 @@ export function ResultSummary({ result, input }: Props) {
           {deviationItems.map((item) => (
             <div
               key={item.id}
-              className="rounded-xl border border-white/8 bg-white/5 px-3 py-2.5"
+              className="flex items-start justify-between gap-3 rounded-xl border border-white/8 bg-white/5 px-3 py-2.5"
             >
-              <p className="text-[0.72rem] text-white/55">{item.label}</p>
-              <p className="mt-1 text-lg font-semibold tabular-nums text-white">{item.value}</p>
-              {item.detail ? <p className="mt-1 text-[0.72rem] text-white/45">{item.detail}</p> : null}
+              <p className="shrink-0 pt-0.5 text-base font-medium text-white/72">{item.label}</p>
+              <div className="min-w-0 flex-1 text-right">
+                <p className="text-xl font-semibold tabular-nums leading-tight text-white">{item.value}</p>
+                {item.detail ? (
+                  <p className="mt-1 text-sm leading-snug text-white/58">{item.detail}</p>
+                ) : null}
+              </div>
             </div>
           ))}
         </div>
