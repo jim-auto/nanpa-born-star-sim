@@ -110,11 +110,8 @@ export function SimulationCharts({ steps }: Props) {
         <ul className="mt-4 space-y-3">
           {contributions.map((item) => (
             <li key={item.id}>
-              <div className="flex items-center justify-between gap-3 text-xs text-white/62">
+              <div className="text-xs text-white/62">
                 <span className="line-clamp-2">{item.label}</span>
-                <span className="shrink-0 tabular-nums text-white/75" title="効き目の目安スコア">
-                  {item.contribution.toFixed(2)}
-                </span>
               </div>
               <div className="mt-1 h-2 overflow-hidden rounded-full bg-white/10">
                 <div
