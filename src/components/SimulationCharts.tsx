@@ -67,7 +67,7 @@ export function SimulationCharts({ steps }: Props) {
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="rounded-2xl border border-white/10 bg-night-900/60 p-5">
         <div className="flex items-baseline justify-between gap-3">
-          <h3 className="text-sm font-semibold text-white">条件を足すごとの割合（小さすぎる数字を見やすくしたもの）</h3>
+          <h3 className="text-sm font-semibold text-white">条件を足したときの割合</h3>
           <p className="text-xs text-white/58">
             {formatPercent(maxRem)} → {formatPercent(minRem)}
           </p>
@@ -101,14 +101,12 @@ export function SimulationCharts({ steps }: Props) {
             strokeWidth={6}
           />
         </svg>
-        <p className="mt-2 text-xs leading-relaxed text-white/58">
-          縦は「けたがいくつ減るか」イメージです。条件が増えるほど、線はだいたい下がります。
-        </p>
+        <p className="mt-2 text-xs leading-relaxed text-white/58">条件が増えるほど、線は下がります。</p>
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-night-900/60 p-5">
-        <h3 className="text-sm font-semibold text-white">どの条件で割合が大きく減ったか（目安）</h3>
-        <p className="mt-1 text-xs text-white/52">棒が長いほど、その条件で一気に狭くなったイメージです。</p>
+        <h3 className="text-sm font-semibold text-white">効いた条件</h3>
+        <p className="mt-1 text-xs text-white/52">棒が長いほど効いています。</p>
         <ul className="mt-4 space-y-3">
           {contributions.map((item) => (
             <li key={item.id}>
@@ -128,7 +126,7 @@ export function SimulationCharts({ steps }: Props) {
           ))}
         </ul>
         {contributions.length === 0 ? (
-          <p className="mt-4 text-sm text-white/58">まだ条件がありません。下の星モジュールで「使う」にチェックを入れてください。</p>
+          <p className="mt-4 text-sm text-white/58">下の星モジュールで「使う」を入れてください。</p>
         ) : null}
       </div>
     </div>

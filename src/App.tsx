@@ -23,17 +23,14 @@ export default function App() {
           生まれた星偏差値診断
         </h1>
         <p className="max-w-3xl text-pretty text-sm leading-relaxed text-white/72">
-          <strong className="font-medium text-white/85">これはフェルミ推定です。</strong>
-          <strong className="font-medium text-white/80">顔・身長・IQ・実家・地域</strong>
-          などをバラバラに拾い、それぞれの比率を<strong className="font-medium text-white/80">順に掛け合わせただけ</strong>
-          の机上計算です。だいたいの桁を眺めるためのもので、項目どうしの関係は無視します。
-          <span className="text-white/58">統計の公式予測や実測の代替ではありません（娯楽）。</span>
+          顔・身長・IQ・実家・地域などをざっくり掛け合わせる
+          <strong className="font-medium text-white/82">フェルミ推定のネタ診断</strong>
+          です。実測や公式統計の予測ではありません。
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <PresetButtons onSelect={setInput} />
           <p className="text-xs leading-relaxed text-white/58">
-            プリセットを押すと入力がまとめて上書きされます。初見は「平均の星」から顔・身長・IQ
-            だけ動かすと変化が見やすいです。
+            迷ったら「平均の星」から顔・身長・IQだけ動かすと見やすいです。
           </p>
         </div>
       </header>
@@ -47,12 +44,11 @@ export default function App() {
       <FilterPanel value={input} onChange={setInput} />
 
       <section className="rounded-2xl border border-white/10 bg-night-950/40 p-5 text-sm leading-relaxed text-white/66">
-        <h2 className="text-base font-semibold text-white">計算のながれ（ざっくり）</h2>
+        <h2 className="text-base font-semibold text-white">使った条件</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5">
           {result.steps.map((step) => (
             <li key={step.id}>
               <span className="font-medium text-white/80">{step.label}</span>
-              <span className="text-white/58"> — {step.note}</span>
             </li>
           ))}
         </ul>
@@ -60,12 +56,11 @@ export default function App() {
 
       <footer className="border-t border-white/10 pt-6 text-xs leading-relaxed text-white/55">
         <p>
-          本ツールは<strong className="font-medium text-white/55">フェルミ推定</strong>
-          による娯楽です。医療・恋愛・道徳の助言ではありません。中の数字は上の
+          娯楽用の<strong className="font-medium text-white/55">フェルミ推定</strong>です。詳しい前提は
           <a href="#method-notes" className="mx-1 text-star-200 underline decoration-star-300/40 underline-offset-2">
-            前提と数字
+            前提
           </a>
-          に合わせています。
+          を見てください。
         </p>
       </footer>
     </div>

@@ -106,9 +106,7 @@ export function FilterPanel({ value, onChange }: Props) {
           <div>
             <h2 className="text-lg font-semibold text-white">星モジュール</h2>
             <p className="text-sm leading-relaxed text-white/62">
-              <strong className="font-medium text-white/70">フェルミ推定</strong>
-              用の入力です。顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（場当たりの係数）。すべて{' '}
-              {DEVIATION_MIN}–{DEVIATION_MAX} はスライダー共通レンジです。
+              顔〜IQ は偏差値、年代・実家・地域は係数です。スライダーは {DEVIATION_MIN}–{DEVIATION_MAX}。
             </p>
           </div>
           <fieldset className="flex gap-2 rounded-xl border border-white/10 bg-night-950/40 p-1">

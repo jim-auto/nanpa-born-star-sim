@@ -36,38 +36,45 @@ export function ResultSummary({ result }: Props) {
 
   return (
     <section className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="max-w-3xl">
           <p className="text-xs tracking-wide text-white/58">生まれた星偏差値</p>
-          <p className="mt-0.5 text-[0.7rem] text-white/52">
-            フェルミ推定の目安（このアプリ独自の計算です。統計の公式値ではありません）
+          <p className="mt-0.5 text-[0.7rem] text-white/52">このアプリ独自の目安です。</p>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-[minmax(0,12rem),1fr]">
+            <div className="rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
+              <p className="text-[0.7rem] tracking-wide text-white/52">偏差値</p>
+              <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
+                {result.geneticDeviation.toFixed(1)}
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-star-300/18 bg-star-500/8 px-4 py-3">
+              <p className="text-[0.7rem] tracking-wide text-white/52">だいたいの帯</p>
+              <p className="mt-1 text-2xl font-semibold tracking-tight text-star-100 sm:text-[1.9rem]">
+                {result.modelTierShortJa}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-white/60">
+                スライダーと同じ「平均50・まわり10くらい」の目安に直した表示です。
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-3 text-[0.75rem] leading-relaxed text-white/55">
+            複数条件を1本のスコアにまとめた目安です。
           </p>
-          <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
-            {result.geneticDeviation.toFixed(1)}
-          </p>
-          <p className="mt-2 text-sm text-white/72">
-            <span className="text-white/58">日本人の検定順位をそのまま出しているわけではなく、</span>
-            スライダーと同じ<strong className="font-medium text-white/80">「平均50・まわり10くらい」</strong>
-            のイメージに直すと<strong className="font-medium text-star-200">{result.modelTierShortJa}</strong>
-          </p>
-          <p className="mt-1 text-[0.75rem] leading-relaxed text-white/55">
-            たくさんの条件を1本のスコアに丸めたうえでの目安です。身長など一部は日本人向けの平均・ばらつきを参照しています。
-          </p>
-          <p className="mt-2 text-sm text-white/66">
-            使っている条件を<strong className="font-medium text-white/75">全部そろえたときの割合</strong>（想像）{' '}
+          <p className="mt-3 text-sm text-white/66">
+            <strong className="font-medium text-white/75">全部そろう割合</strong>（想像）{' '}
             <span className="font-medium text-white/85">{formatPercent(result.finalRatio)}</span>
           </p>
           <p className="mt-1 text-xs leading-relaxed text-white/55">
-            <strong className="font-medium text-white/50">フェルミ推定</strong>
-            として、各項目に「こんな人がどれくらいいそう」という比率を付け、それを
-            <strong className="font-medium text-white/55">順に掛け合わせた数</strong>
-            です。
+            各項目の比率を順に掛けた値です。
           </p>
           <a
             href="#method-notes"
             className="mt-3 inline-flex rounded-full border border-star-300/25 bg-star-500/10 px-3 py-1 text-xs font-medium text-star-100 transition hover:border-star-300/45 hover:bg-star-500/20"
           >
-            前提と数字を見る
+            前提を見る
           </a>
         </div>
         <div
@@ -75,7 +82,7 @@ export function ResultSummary({ result }: Props) {
         >
           <p className={`text-sm font-medium ${tone.text}`}>{result.rarityLabel}</p>
           <p className="mt-1 text-xs text-white/58">
-            使っているモジュール {result.enabledFactorCount} 個・身長の目安は{result.genderLabel}基準
+            モジュール {result.enabledFactorCount} 個・{result.genderLabel}基準
           </p>
         </div>
       </div>

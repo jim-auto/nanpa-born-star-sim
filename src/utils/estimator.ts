@@ -345,16 +345,25 @@ export function formatPercent(value: number): string {
   if (percent === 0) {
     return '0%';
   }
+
+  const formatFixed = (digits: number) =>
+    percent
+      .toFixed(digits)
+      .replace(/\.?0+$/, '');
+
+  if (percent < 0.000001) {
+    return '< 0.000001%';
+  }
   if (percent < 0.0001) {
-    return `${percent.toExponential(2)}%`;
+    return `${formatFixed(6)}%`;
   }
   if (percent < 0.01) {
-    return `${percent.toFixed(4)}%`;
+    return `${formatFixed(4)}%`;
   }
   if (percent < 1) {
-    return `${percent.toFixed(3)}%`;
+    return `${formatFixed(3)}%`;
   }
-  return `${percent.toFixed(2)}%`;
+  return `${formatFixed(2)}%`;
 }
 
 export function logDropContribution(ratio: number): number {
