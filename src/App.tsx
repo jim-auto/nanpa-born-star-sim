@@ -35,7 +35,7 @@ export default function App() {
         </div>
       </header>
 
-      <ResultSummary result={result} />
+      <ResultSummary result={result} input={input} />
 
       <MethodNotes />
 
