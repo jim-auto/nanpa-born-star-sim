@@ -67,7 +67,7 @@ export function SimulationCharts({ steps }: Props) {
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="rounded-2xl border border-white/10 bg-night-900/60 p-5">
         <div className="flex items-baseline justify-between gap-3">
-          <h3 className="text-sm font-semibold text-white">条件を足すごとの割合（対数スケール）</h3>
+          <h3 className="text-sm font-semibold text-white">条件を足すごとの割合（小さすぎる数字を見やすくしたもの）</h3>
           <p className="text-xs text-white/45">
             {formatPercent(maxRem)} → {formatPercent(minRem)}
           </p>
@@ -102,18 +102,19 @@ export function SimulationCharts({ steps }: Props) {
           />
         </svg>
         <p className="mt-2 text-xs leading-relaxed text-white/45">
-          縦軸は log₁₀（全体の割合）。条件が増えるほど、線はだいたい下がります。
+          縦は「けたがいくつ減るか」イメージです。条件が増えるほど、線はだいたい下がります。
         </p>
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-night-900/60 p-5">
-        <h3 className="text-sm font-semibold text-white">条件ごとの寄与（−log₁₀・割合がどれだけ下がったか）</h3>
+        <h3 className="text-sm font-semibold text-white">どの条件で割合が大きく減ったか（目安）</h3>
+        <p className="mt-1 text-xs text-white/40">棒が長いほど、その条件で一気に狭くなったイメージです。</p>
         <ul className="mt-4 space-y-3">
           {contributions.map((item) => (
             <li key={item.id}>
               <div className="flex items-center justify-between gap-3 text-xs text-white/55">
                 <span className="line-clamp-2">{item.label}</span>
-                <span className="shrink-0 tabular-nums text-white/75">
+                <span className="shrink-0 tabular-nums text-white/75" title="効き目の目安スコア">
                   {item.contribution.toFixed(2)}
                 </span>
               </div>
@@ -127,7 +128,7 @@ export function SimulationCharts({ steps }: Props) {
           ))}
         </ul>
         {contributions.length === 0 ? (
-          <p className="mt-4 text-sm text-white/45">ベースのみです。モジュールをオンにしてください。</p>
+          <p className="mt-4 text-sm text-white/45">まだ条件がありません。下の星モジュールで「使う」にチェックを入れてください。</p>
         ) : null}
       </div>
     </div>

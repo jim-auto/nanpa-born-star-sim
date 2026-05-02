@@ -36,7 +36,7 @@ export interface GeneticInput {
   physiqueDeviation: number;
   athleticDeviation: number;
   voiceAuraDeviation: number;
-  /** スライダーは「偏差値風」。内部で IQ 目安 → N(100,15) の尾。 */
+  /** スライダーは「偏差値風」。内部で IQ 目安を出し、その上の帯の割合をざっくり見る。 */
   iqDeviation: number;
   sceneAgeId: SceneAgeId;
   familyWealthId: FamilyWealthId;
@@ -58,7 +58,7 @@ export interface GeneticEstimationResult {
   genderLabel: string;
   finalRatio: number;
   geneticDeviation: number;
-  /** N(50,10) 片側に読み替えたときの「約上位/下位〇%」短文（フェルミ・順位の代替ではない） */
+  /** 「平均50・まわり10くらい」に読み替えたときの「約上位/下位〇%」短文（フェルミ・順位の代替ではない） */
   modelTierShortJa: string;
   steps: GeneticStep[];
   enabledFactorCount: number;

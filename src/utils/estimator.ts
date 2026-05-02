@@ -120,7 +120,7 @@ function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone:
     return { rarityLabel: 'かなり狭い：全部そろうとめったにいないイメージ', rarityTone: 'mythic' };
   }
   if (finalRatio < 1e-3) {
-    return { rarityLabel: 'ハイスペ寄り（このシミュ上）', rarityTone: 'rare' };
+    return { rarityLabel: 'ハイスペ寄り（この診断の目安）', rarityTone: 'rare' };
   }
   if (finalRatio < 0.01) {
     return { rarityLabel: '条件はキツめでも「あり得る」側の帯', rarityTone: 'rare' };
@@ -129,18 +129,18 @@ function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone:
     return { rarityLabel: '条件を足すと、だいぶ絞られるイメージ', rarityTone: 'narrow' };
   }
   return {
-    rarityLabel: 'このシミュ上では、めずらしすぎない組み合わせ',
+    rarityLabel: 'この診断だと、めずらしすぎない組み合わせ',
     rarityTone: 'reasonable',
   };
 }
 
-/** 尾確率モデル：「その偏差値以上」を N(TRAIT_DEV_MEAN, TRAIT_DEV_SD) で解釈。 */
+/** スライダー値を「平均50・幅10」くらいの釣り合いで見て、「その数以上がどれくらいいそうか」。 */
 export function ratioFromTraitDeviation(deviation: number): number {
   const d = clampDeviation(deviation);
   return tailRatioNormal(d, TRAIT_DEV_MEAN, TRAIT_DEV_SD);
 }
 
-/** 表示用：合成スコアを N(TRAIT_DEV_MEAN, TRAIT_DEV_SD) の「高いほど良い」1次元に押し直したときの片側％ラベル */
+/** 表示用：合成スコアを「平均50・幅10」と同じ目安尺に直したときの、おおよその上位／下位％ラベル */
 export function modelTierShortJapanese(deviation: number): string {
   const d = clampDeviation(deviation);
   const pGe = ratioFromTraitDeviation(d);
@@ -167,7 +167,7 @@ function formatTierPercentPiece(x: number): string {
   return `${x.toPrecision(2)}%`;
 }
 
-/** 身長偏差値から目安 cm（表示用）。z=(D−50)/10 を身長の正規近似に写像。 */
+/** 身長偏差値から目安 cm（表示用）。スライダーと身長の平均・幅をつなぐ。 */
 export function approximateHeightCmFromDeviation(deviation: number, gender: Gender): number {
   const d = clampDeviation(deviation);
   const z = (d - TRAIT_DEV_MEAN) / TRAIT_DEV_SD;
@@ -176,7 +176,7 @@ export function approximateHeightCmFromDeviation(deviation: number, gender: Gend
   return mean + z * sd;
 }
 
-/** スライダー D を IQ 目安に換算（平均100・SD15 のスケールに載せるフェルミ）。 */
+/** スライダーから IQ の雰囲気（平均100・ばらつき15 くらい）を出す。 */
 export function approximateIqFromDeviation(deviation: number): number {
   const d = clampDeviation(deviation);
   const z = (d - TRAIT_DEV_MEAN) / TRAIT_DEV_SD;
@@ -203,10 +203,10 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
   const steps: GeneticStep[] = [
     {
       id: 'base',
-      label: `ベース（${genderLabelJp}・星モジュールを独立に掛け合わせる）`,
+      label: `ベース（${genderLabelJp}・星モジュールを順に掛け合わせ）`,
       ratio: 1,
       remaining: 1,
-      note: 'フェルミ推定の独立近似。項目どうしの相関は入れていません。',
+      note: '項目どうしのつながりは見ず、バラバラに割合だけを掛けていきます。',
     },
   ];
 
@@ -216,9 +216,9 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'face',
-      `顔面偏差値 ${d} 以上（N(${TRAIT_DEV_MEAN},${TRAIT_DEV_SD}) の尾）`,
+      `顔：偏差値 ${d} 以上のライン`,
       ratio,
-      `「そのスコア以上」が母集団に占める割合を片側確率として掛ける。`,
+      `「ここまで立っている人がどれくらいいそうか」の割合として掛けます。`,
     );
   }
 
@@ -231,9 +231,9 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'height',
-      `身長偏差値 ${d}（目安 ${thresholdCm.toFixed(1)} cm・${genderLabelJp}）`,
+      `身長：偏差値 ${d}（目安 ${thresholdCm.toFixed(1)} cm・${genderLabelJp}）`,
       ratio,
-      `z=(D−${TRAIT_DEV_MEAN})/${TRAIT_DEV_SD} を身長の正規近似（平均 ${mean}cm・SD ${sd}cm）に写像し、同じ z で尾確率を取る。`,
+      `スライダーを身長の目安に置き換え、「その身長以上がどれくらいいそうか」の割合です（平均おおよそ ${mean}cm・幅 ${sd}cm くらいと仮定）。`,
     );
   }
 
@@ -243,9 +243,9 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'physique',
-      `体格偏差値 ${d} 以上`,
+      `体格：偏差値 ${d} 以上`,
       ratio,
-      `骨格・筋肉の先天イメージを N(${TRAIT_DEV_MEAN},${TRAIT_DEV_SD}) のスケールに載せた尾確率。`,
+      `骨格・筋肉の印象を、他の項目と同じ目安のスライダーでざっくり数えています。`,
     );
   }
 
@@ -255,9 +255,9 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'athletic',
-      `運動神経偏差値 ${d} 以上`,
+      `運動神経：偏差値 ${d} 以上`,
       ratio,
-      `協調・瞬発などを同一スケールでざっくり尾モデル化。`,
+      `協調・瞬発などの生素質イメージを、他と同じ尺でざっくり数えています。`,
     );
   }
 
@@ -267,9 +267,9 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'voiceAura',
-      `声偏差値 ${d} 以上`,
+      `声：偏差値 ${d} 以上`,
       ratio,
-      `計測困難なのでエンタメ寄り。分布は他因子と同型の仮定。`,
+      `聞き手の主観が大きいので、他の項目と同じざっくり仮定にそろえています。`,
     );
   }
 
@@ -280,9 +280,9 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'iq',
-      `IQ 目安 ${iqLine.toFixed(0)} 以上（N(${IQ_POP_MEAN},${IQ_POP_SD}) の尾）`,
+      `IQ：目安 ${iqLine.toFixed(0)} 以上`,
       ratio,
-      `スライダーは偏差値風 D とし、IQ 目安 = ${IQ_POP_MEAN} + ${IQ_POP_SD}×(D−${TRAIT_DEV_MEAN})/${TRAIT_DEV_SD}。実検査ではありません。`,
+      `スライダーから IQ の雰囲気を出し、「そのくらい以上がどれくらいいそうか」の割合です。本物の検査や診断ではありません。`,
     );
   }
 
@@ -293,7 +293,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
       'age',
       `年代感：${option.label}`,
       option.ratio,
-      `${option.note}（人口の尾確率ではなく、係数として掛ける）。`,
+      `${option.note} 人口の何％かというより、場当たりの係数として掛けます。`,
     );
   }
 
@@ -304,7 +304,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
       'familyWealth',
       `実家の太さ：${option.label}`,
       option.ratio,
-      `${option.note}（尾確率ではなく係数）。`,
+      `${option.note} こちらも係数として掛けるだけです。`,
     );
   }
 
@@ -315,7 +315,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
       'birthRegion',
       `育ちの地域：${option.label}`,
       option.ratio,
-      `${option.note}（尾確率ではなく係数）。`,
+      `${option.note} こちらも係数として掛けるだけです。`,
     );
   }
 

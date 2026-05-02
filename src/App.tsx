@@ -25,7 +25,7 @@ export default function App() {
           <strong className="font-medium text-white/85">これはフェルミ推定です。</strong>
           <strong className="font-medium text-white/80">顔・身長・IQ・実家・地域</strong>
           などをバラバラに拾い、それぞれの比率を<strong className="font-medium text-white/80">順に掛け合わせただけ</strong>
-          の机上計算です。桁やオーダーを眺めるためのもので、項目どうしの関係は無視します。
+          の机上計算です。だいたいの桁を眺めるためのもので、項目どうしの関係は無視します。
           <span className="text-white/45">統計の公式予測や実測の代替ではありません（娯楽）。</span>
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -41,7 +41,7 @@ export default function App() {
       <FilterPanel value={input} onChange={setInput} />
 
       <section className="rounded-2xl border border-white/10 bg-night-950/40 p-5 text-sm leading-relaxed text-white/55">
-        <h2 className="text-base font-semibold text-white">ステップの読み方</h2>
+        <h2 className="text-base font-semibold text-white">計算のながれ（ざっくり）</h2>
         <ul className="mt-3 list-disc space-y-2 pl-5">
           {result.steps.map((step) => (
             <li key={step.id}>
@@ -55,11 +55,7 @@ export default function App() {
       <footer className="border-t border-white/10 pt-6 text-xs text-white/40">
         <p>
           本ツールは<strong className="font-medium text-white/55">フェルミ推定</strong>
-          による娯楽です。医療・恋愛・道徳の助言ではありません。数値は{' '}
-          <code className="rounded bg-white/10 px-1 py-0.5 text-[0.7rem] text-star-200">
-            docs/assumptions.md
-          </code>{' '}
-          の仮定に依存します。
+          による娯楽です。医療・恋愛・道徳の助言ではありません。中の数字は公開している仮定リストに合わせています（細かい数式はリポジトリのドキュメント向けです）。
         </p>
       </footer>
     </div>

@@ -36,21 +36,27 @@ type DeviationModuleConfig = {
 };
 
 const DEVIATION_MODULES: DeviationModuleConfig[] = [
-  { id: 'face', title: '顔面偏差値', description: `尾モデル N(50,10)・${DEVIATION_MIN}–${DEVIATION_MAX}`, field: 'faceDeviation', hint: 'none' },
+  {
+    id: 'face',
+    title: '顔面偏差値',
+    description: `顔立ちの立ち上がり感をざっくり（${DEVIATION_MIN}–${DEVIATION_MAX}）`,
+    field: 'faceDeviation',
+    hint: 'none',
+  },
   {
     id: 'height',
     title: '身長偏差値',
-    description: `性別別身長へ写像・目安 cm（${DEVIATION_MIN}–${DEVIATION_MAX}）`,
+    description: `スライダーを身長の目安 cm に変換（${DEVIATION_MIN}–${DEVIATION_MAX}）`,
     field: 'heightDeviation',
     hint: 'cm',
   },
-  { id: 'physique', title: '体格偏差値', description: '骨格・筋肉イメージ（尾モデル）', field: 'physiqueDeviation', hint: 'none' },
-  { id: 'athletic', title: '運動神経偏差値', description: '協調・瞬発など（尾モデル）', field: 'athleticDeviation', hint: 'none' },
-  { id: 'voiceAura', title: '声偏差値', description: 'トーンや話し方の印象など（主観強め・尾モデル）', field: 'voiceAuraDeviation', hint: 'none' },
+  { id: 'physique', title: '体格偏差値', description: '骨格・筋肉の印象をざっくり', field: 'physiqueDeviation', hint: 'none' },
+  { id: 'athletic', title: '運動神経偏差値', description: '協調・瞬発などの生素質イメージ', field: 'athleticDeviation', hint: 'none' },
+  { id: 'voiceAura', title: '声偏差値', description: 'トーンや話し方の印象（主観が強め）', field: 'voiceAuraDeviation', hint: 'none' },
   {
     id: 'iq',
     title: 'IQ（偏差値スライダー）',
-    description: `目安 IQ は 100+15×z（D=${DEVIATION_MIN}–${DEVIATION_MAX}）。尾は N(100,15)。`,
+    description: `スライダーから IQ の雰囲気を出して割合を見る仮定（${DEVIATION_MIN}–${DEVIATION_MAX}）。本物の検査ではありません`,
     field: 'iqDeviation',
     hint: 'iq',
   },
@@ -101,7 +107,7 @@ export function FilterPanel({ value, onChange }: Props) {
             <h2 className="text-lg font-semibold text-white">星モジュール</h2>
             <p className="text-sm text-white/50">
               <strong className="font-medium text-white/70">フェルミ推定</strong>
-              用の入力です。顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（係数で掛けます）。すべて{' '}
+              用の入力です。顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（場当たりの係数）。すべて{' '}
               {DEVIATION_MIN}–{DEVIATION_MAX} はスライダー共通レンジです。
             </p>
           </div>
@@ -144,7 +150,7 @@ export function FilterPanel({ value, onChange }: Props) {
                   <Toggle
                     checked={value.enabled[meta.id]}
                     onCheckedChange={(checked) => setEnabled(meta.id, checked)}
-                    label="反映"
+                    label="使う"
                   />
                 </div>
 
@@ -187,7 +193,7 @@ export function FilterPanel({ value, onChange }: Props) {
               <Toggle
                 checked={value.enabled.age}
                 onCheckedChange={(checked) => setEnabled('age', checked)}
-                label="反映"
+                label="使う"
               />
             </div>
             <label className="mt-4 block text-xs text-white/55">
@@ -218,7 +224,7 @@ export function FilterPanel({ value, onChange }: Props) {
               <Toggle
                 checked={value.enabled.familyWealth}
                 onCheckedChange={(checked) => setEnabled('familyWealth', checked)}
-                label="反映"
+                label="使う"
               />
             </div>
             <label className="mt-4 block text-xs text-white/55">
@@ -247,12 +253,12 @@ export function FilterPanel({ value, onChange }: Props) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-sm font-semibold text-white">育ちの地域</h3>
-                <p className="mt-1 text-xs text-white/45">都会感・マナーの前提などをラベルで雑に割り当て（係数）。</p>
+                <p className="mt-1 text-xs text-white/45">都会感や育ちのイメージをラベルで雑に分け、係数で掛けます。</p>
               </div>
               <Toggle
                 checked={value.enabled.birthRegion}
                 onCheckedChange={(checked) => setEnabled('birthRegion', checked)}
-                label="反映"
+                label="使う"
               />
             </div>
             <label className="mt-4 block text-xs text-white/55">

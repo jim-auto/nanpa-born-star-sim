@@ -47,14 +47,14 @@ export function ResultSummary({ result }: Props) {
           </p>
           <p className="mt-2 text-sm text-white/65">
             <span className="text-white/45">日本人の検定順位をそのまま出しているわけではなく、</span>
-            スライダーと同じ<strong className="font-medium text-white/80"> N(50,10) の片側イメージ</strong>
-            に直すと<strong className="font-medium text-star-200">{result.modelTierShortJa}</strong>
+            スライダーと同じ<strong className="font-medium text-white/80">「平均50・まわり10くらい」</strong>
+            のイメージに直すと<strong className="font-medium text-star-200">{result.modelTierShortJa}</strong>
           </p>
           <p className="mt-1 text-[0.65rem] leading-relaxed text-white/32">
-            合成スコアを1本の正規分布の尾に直した目安です。身長など一部は日本人向けの平均・ばらつきを参照しています。
+            たくさんの条件を1本のスコアに丸めたうえでの目安です。身長など一部は日本人向けの平均・ばらつきを参照しています。
           </p>
           <p className="mt-2 text-sm text-white/55">
-            オンにした条件を<strong className="font-medium text-white/75">全部そろえたときの割合</strong>（想像）{' '}
+            使っている条件を<strong className="font-medium text-white/75">全部そろえたときの割合</strong>（想像）{' '}
             <span className="font-medium text-white/85">{formatPercent(result.finalRatio)}</span>
           </p>
           <p className="mt-1 text-xs leading-relaxed text-white/38">
@@ -69,7 +69,7 @@ export function ResultSummary({ result }: Props) {
         >
           <p className={`text-sm font-medium ${tone.text}`}>{result.rarityLabel}</p>
           <p className="mt-1 text-xs text-white/45">
-            オン中のモジュール {result.enabledFactorCount} 個・身長の目安は{result.genderLabel}基準
+            使っているモジュール {result.enabledFactorCount} 個・身長の目安は{result.genderLabel}基準
           </p>
         </div>
       </div>
