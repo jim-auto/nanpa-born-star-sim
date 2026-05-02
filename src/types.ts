@@ -14,8 +14,9 @@ export type EnabledGeneticConditions = Record<GeneticConditionId, boolean>;
 export type SceneAgeId = 'early20s' | 'late20s' | 'early30s' | 'late30s' | 'early40sPlus';
 
 /** 各スライダーの共通レンジ（偏差値風スケール）。 */
-export const DEVIATION_MIN = 40;
-export const DEVIATION_MAX = 80;
+/** 凡〜神で表示に幅を出すため、教科書の偏差値よりやや広め。 */
+export const DEVIATION_MIN = 35;
+export const DEVIATION_MAX = 85;
 
 export interface GeneticInput {
   /** 身長の目安 cm 換算に利用。デフォルトは男性。 */

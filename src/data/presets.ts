@@ -18,6 +18,7 @@ export const defaultGeneticInput: GeneticInput = {
   sceneAgeId: 'early20s',
 };
 
+/** 各因子をかなり尖らせた「規格外」寄り（シミュ用）。 */
 export const presetGodGenes: GeneticInput = {
   gender: 'male',
   enabled: {
@@ -28,14 +29,15 @@ export const presetGodGenes: GeneticInput = {
     voiceAura: true,
     age: true,
   },
-  faceDeviation: 72,
-  heightDeviation: 64,
-  physiqueDeviation: 62,
-  athleticDeviation: 65,
-  voiceAuraDeviation: 68,
+  faceDeviation: 84,
+  heightDeviation: 83,
+  physiqueDeviation: 82,
+  athleticDeviation: 83,
+  voiceAuraDeviation: 84,
   sceneAgeId: 'early20s',
 };
 
+/** どこにでもいそうな平均イメージ。 */
 export const presetAverageBundle: GeneticInput = {
   gender: 'male',
   enabled: {
@@ -54,6 +56,7 @@ export const presetAverageBundle: GeneticInput = {
   sceneAgeId: 'late20s',
 };
 
+/** タブー寄り・シナリオ用の下限付近。 */
 export const presetMortalGenes: GeneticInput = {
   gender: 'male',
   enabled: {
@@ -64,11 +67,11 @@ export const presetMortalGenes: GeneticInput = {
     voiceAura: true,
     age: true,
   },
-  faceDeviation: 44,
-  heightDeviation: 46,
-  physiqueDeviation: 47,
-  athleticDeviation: 46,
-  voiceAuraDeviation: 45,
+  faceDeviation: 35,
+  heightDeviation: 36,
+  physiqueDeviation: 36,
+  athleticDeviation: 35,
+  voiceAuraDeviation: 35,
   sceneAgeId: 'early40sPlus',
 };
 
