@@ -4,7 +4,11 @@ import {
   approximateIqFromDeviation,
   formatPercent,
 } from '../utils/estimator';
-import { getSceneAgeOption } from '../data/assumptions';
+import {
+  getBirthRegionOption,
+  getFamilyWealthOption,
+  getSceneAgeOption,
+} from '../data/assumptions';
 
 const toneStyles: Record<
   RarityTone,
@@ -43,7 +47,7 @@ type DeviationConditionId = Extract<
 >;
 
 type SettingItem = {
-  id: DeviationConditionId | 'age';
+  id: DeviationConditionId | 'age' | 'familyWealth' | 'birthRegion';
   label: string;
   value: string;
   detail: string | null;
@@ -81,11 +85,30 @@ export function ResultSummary({ result, input }: Props) {
     });
   }
   if (input.enabled.age) {
+    const ageOption = getSceneAgeOption(input.sceneAgeId);
     deviationItems.push({
       id: 'age',
       label: '外見年齢',
-      value: getSceneAgeOption(input.sceneAgeId).label,
-      detail: null,
+      value: `${ageOption.displayDeviation}`,
+      detail: ageOption.label,
+    });
+  }
+  if (input.enabled.familyWealth) {
+    const familyWealthOption = getFamilyWealthOption(input.familyWealthId);
+    deviationItems.push({
+      id: 'familyWealth',
+      label: '実家',
+      value: `${familyWealthOption.displayDeviation}`,
+      detail: familyWealthOption.label,
+    });
+  }
+  if (input.enabled.birthRegion) {
+    const birthRegionOption = getBirthRegionOption(input.birthRegionId);
+    deviationItems.push({
+      id: 'birthRegion',
+      label: '育ち',
+      value: `${birthRegionOption.displayDeviation}`,
+      detail: birthRegionOption.label,
     });
   }
 
