@@ -1,16 +1,7 @@
 import type { GeneticConditionId, GeneticEstimationResult, GeneticInput, RarityTone } from '../types';
 import {
-  equivalentDeviationFromCoefficient,
   formatPercent,
 } from '../utils/estimator';
-import {
-  birthRegionOptions,
-  familyWealthOptions,
-  sceneAgeOptions,
-  getBirthRegionOption,
-  getFamilyWealthOption,
-  getSceneAgeOption,
-} from '../data/assumptions';
 
 const toneStyles: Record<
   RarityTone,
@@ -45,7 +36,7 @@ interface Props {
 
 type DeviationConditionId = Extract<
   GeneticConditionId,
-  'face' | 'height' | 'physique' | 'athletic' | 'voiceAura' | 'iq' | 'age' | 'familyWealth' | 'birthRegion'
+  'face' | 'height' | 'physique' | 'athletic' | 'voiceAura' | 'iq'
 >;
 
 export function ResultSummary({ result, input }: Props) {
@@ -57,45 +48,6 @@ export function ResultSummary({ result, input }: Props) {
     input.enabled.athletic ? { id: 'athletic' as const, label: '運動', value: input.athleticDeviation } : null,
     input.enabled.voiceAura ? { id: 'voiceAura' as const, label: '声', value: input.voiceAuraDeviation } : null,
     input.enabled.iq ? { id: 'iq' as const, label: 'IQ', value: input.iqDeviation } : null,
-    input.enabled.age
-      ? {
-          id: 'age' as const,
-          label: '年代',
-          value: Math.round(
-            equivalentDeviationFromCoefficient(
-              getSceneAgeOption(input.sceneAgeId).ratio,
-              sceneAgeOptions.map((option) => option.ratio),
-              false,
-            ),
-          ),
-        }
-      : null,
-    input.enabled.familyWealth
-      ? {
-          id: 'familyWealth' as const,
-          label: '実家',
-          value: Math.round(
-            equivalentDeviationFromCoefficient(
-              getFamilyWealthOption(input.familyWealthId).ratio,
-              familyWealthOptions.map((option) => option.ratio),
-              true,
-            ),
-          ),
-        }
-      : null,
-    input.enabled.birthRegion
-      ? {
-          id: 'birthRegion' as const,
-          label: '地域',
-          value: Math.round(
-            equivalentDeviationFromCoefficient(
-              getBirthRegionOption(input.birthRegionId).ratio,
-              birthRegionOptions.map((option) => option.ratio),
-              true,
-            ),
-          ),
-        }
-      : null,
   ].filter((item): item is { id: DeviationConditionId; label: string; value: number } => item !== null);
 
   return (
@@ -150,7 +102,7 @@ export function ResultSummary({ result, input }: Props) {
 
       <div className="mt-4 rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-[0.7rem] tracking-wide text-white/52">いまの偏差値（係数は換算）</p>
+          <p className="text-[0.7rem] tracking-wide text-white/52">いまの偏差値</p>
           <a
             href="#method-notes"
             className="inline-flex rounded-full border border-star-300/25 bg-star-500/10 px-3 py-1 text-xs font-medium text-star-100 transition hover:border-star-300/45 hover:bg-star-500/20"
@@ -158,14 +110,14 @@ export function ResultSummary({ result, input }: Props) {
             前提を見る
           </a>
         </div>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-3 grid gap-2 sm:grid-cols-3">
           {deviationItems.map((item) => (
             <div
               key={item.id}
-              className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/5 px-3 py-1.5"
+              className="rounded-xl border border-white/8 bg-white/5 px-3 py-2.5"
             >
-              <span className="text-[0.7rem] text-white/55">{item.label}</span>
-              <span className="text-sm font-medium tabular-nums text-white">{item.value}</span>
+              <p className="text-[0.72rem] text-white/55">{item.label}</p>
+              <p className="mt-1 text-lg font-semibold tabular-nums text-white">{item.value}</p>
             </div>
           ))}
         </div>
