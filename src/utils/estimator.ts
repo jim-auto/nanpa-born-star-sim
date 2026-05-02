@@ -112,20 +112,25 @@ function appendStep(steps: GeneticStep[], id: string, label: string, ratio: numb
   });
 }
 
-function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone: RarityTone } {
-  if (finalRatio <= 1e-6) {
+/**
+ * レア度コピー。「生まれた星偏差値」と同じく joint を q = p^(1/n) に直してから段階を付ける。
+ * 生の joint p だけで見ると因子数が増えるほど平均付近でも極端に小さくなり、偏差値表示と矛盾するため。
+ */
+function rarityFromPerFactorEquivalent(q: number): { rarityLabel: string; rarityTone: RarityTone } {
+  const pq = clamp(q, 1e-15, 1 - 1e-15);
+  if (pq <= 1e-6) {
     return { rarityLabel: '都市伝説級：全部そろうと割合がとてつもなく小さい', rarityTone: 'mythic' };
   }
-  if (finalRatio < 1e-4) {
+  if (pq < 1e-4) {
     return { rarityLabel: 'かなり狭い：全部そろうとめったにいないイメージ', rarityTone: 'mythic' };
   }
-  if (finalRatio < 1e-3) {
+  if (pq < 1e-3) {
     return { rarityLabel: 'ハイスペ寄り（この診断の目安）', rarityTone: 'rare' };
   }
-  if (finalRatio < 0.01) {
+  if (pq < 0.05) {
     return { rarityLabel: '条件はキツめでも「あり得る」側の帯', rarityTone: 'rare' };
   }
-  if (finalRatio < 0.08) {
+  if (pq < 0.15) {
     return { rarityLabel: '条件を足すと、だいぶ絞られるイメージ', rarityTone: 'narrow' };
   }
   return {
@@ -331,7 +336,9 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     enabledFactorCount <= 0
       ? 50
       : geneticDeviationFromRatio(finalRatio, enabledFactorCount);
-  const rarity = rarityFromRatio(finalRatio);
+  const perFactorEq =
+    enabledFactorCount <= 0 ? 0.5 : perFactorEquivalentRatio(finalRatio, enabledFactorCount);
+  const rarity = rarityFromPerFactorEquivalent(perFactorEq);
 
   return {
     gender: input.gender,

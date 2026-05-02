@@ -142,13 +142,6 @@ export function ResultSummary({ result, input }: Props) {
         </div>
       </div>
 
-      <div className="mt-4 rounded-xl border border-white/10 bg-night-950/30 px-4 py-3">
-        <p className="text-[0.7rem] tracking-wide text-white/52">総合スコア</p>
-        <p className="mt-1 text-sm leading-relaxed text-white/72">
-          顔・身長・IQ などをまとめた、このアプリ独自の目安です。
-        </p>
-      </div>
-
       <div className="mt-4 rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="text-[0.7rem] tracking-wide text-white/52">いまの設定</p>
