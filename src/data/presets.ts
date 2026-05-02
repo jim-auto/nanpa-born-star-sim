@@ -15,7 +15,7 @@ export const defaultGeneticInput: GeneticInput = {
   physiqueDeviation: 52,
   athleticDeviation: 52,
   voiceAuraDeviation: 52,
-  ageVitalityDeviation: 50,
+  sceneAgeId: 'early20s',
 };
 
 export const presetGodGenes: GeneticInput = {
@@ -33,7 +33,7 @@ export const presetGodGenes: GeneticInput = {
   physiqueDeviation: 62,
   athleticDeviation: 65,
   voiceAuraDeviation: 68,
-  ageVitalityDeviation: 56,
+  sceneAgeId: 'early20s',
 };
 
 export const presetAverageBundle: GeneticInput = {
@@ -51,7 +51,7 @@ export const presetAverageBundle: GeneticInput = {
   physiqueDeviation: 50,
   athleticDeviation: 50,
   voiceAuraDeviation: 50,
-  ageVitalityDeviation: 48,
+  sceneAgeId: 'late20s',
 };
 
 export const presetMortalGenes: GeneticInput = {
@@ -69,7 +69,7 @@ export const presetMortalGenes: GeneticInput = {
   physiqueDeviation: 47,
   athleticDeviation: 46,
   voiceAuraDeviation: 45,
-  ageVitalityDeviation: 38,
+  sceneAgeId: 'early40sPlus',
 };
 
 export const presets = [

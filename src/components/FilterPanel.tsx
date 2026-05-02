@@ -1,4 +1,5 @@
-import type { Gender, GeneticConditionId, GeneticInput } from '../types';
+import { sceneAgeOptions } from '../data/assumptions';
+import type { Gender, GeneticConditionId, GeneticInput, SceneAgeId } from '../types';
 import { DEVIATION_MAX, DEVIATION_MIN } from '../types';
 import { approximateHeightCmFromDeviation } from '../utils/estimator';
 
@@ -12,11 +13,10 @@ type DeviationField =
   | 'heightDeviation'
   | 'physiqueDeviation'
   | 'athleticDeviation'
-  | 'voiceAuraDeviation'
-  | 'ageVitalityDeviation';
+  | 'voiceAuraDeviation';
 
-const MODULES: {
-  id: GeneticConditionId;
+const DEVIATION_MODULES: {
+  id: Exclude<GeneticConditionId, 'age'>;
   title: string;
   description: string;
   field: DeviationField;
@@ -31,12 +31,6 @@ const MODULES: {
   { id: 'physique', title: '体格偏差値', description: '骨格・筋肉の先天イメージ（尾モデル）', field: 'physiqueDeviation' },
   { id: 'athletic', title: '運動神経偏差値', description: '協調・瞬発など（尾モデル）', field: 'athleticDeviation' },
   { id: 'voiceAura', title: '声・オーラ偏差値', description: '主観強め・同一スケールの尾仮定', field: 'voiceAuraDeviation' },
-  {
-    id: 'age',
-    title: '若さ・持久（界隈）偏差値',
-    description: '累積係数モデル（尾とは別解釈・docs参照）',
-    field: 'ageVitalityDeviation',
-  },
 ];
 
 function Toggle({
@@ -83,7 +77,7 @@ export function FilterPanel({ value, onChange }: Props) {
           <div>
             <h2 className="text-lg font-semibold text-white">先天性モジュール</h2>
             <p className="text-sm text-white/50">
-              各項目は偏差値 {DEVIATION_MIN}–{DEVIATION_MAX}。オンオフとスライダーが即座に連乗へ反映されます。
+              顔・身長・体格・運動・声は偏差値 {DEVIATION_MIN}–{DEVIATION_MAX}。年代感だけ下のプルダウンで選びます（わかりやすさ優先）。
             </p>
           </div>
           <fieldset className="flex gap-2 rounded-xl border border-white/10 bg-night-950/40 p-1">
@@ -106,7 +100,7 @@ export function FilterPanel({ value, onChange }: Props) {
         </header>
 
         <div className="grid gap-5 lg:grid-cols-2">
-          {MODULES.map((meta) => {
+          {DEVIATION_MODULES.map((meta) => {
             const dev = value[meta.field];
             const hintCm =
               meta.id === 'height'
@@ -154,6 +148,40 @@ export function FilterPanel({ value, onChange }: Props) {
               </article>
             );
           })}
+
+          <article className="rounded-xl border border-white/10 bg-night-950/35 p-4 ring-1 ring-amber-500/15">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-semibold text-white">見た目・スタミナの年代感</h3>
+                <p className="mt-1 text-xs text-white/45">
+                  実年齢そのものではなく「夜のシーンでどう見える／キレるか」のラベル。係数はフェルミ（偏差値ではありません）。
+                </p>
+              </div>
+              <Toggle
+                checked={value.enabled.age}
+                onCheckedChange={(checked) => setEnabled('age', checked)}
+                label="反映"
+              />
+            </div>
+
+            <label className="mt-4 block text-xs text-white/55">
+              <span className="mb-2 block text-white/55">年代帯</span>
+              <select
+                disabled={!value.enabled.age}
+                value={value.sceneAgeId}
+                onChange={(event) =>
+                  onChange({ ...value, sceneAgeId: event.target.value as SceneAgeId })
+                }
+                className="w-full rounded-lg border border-white/15 bg-night-900/80 px-3 py-2.5 text-sm text-white outline-none focus:border-amber-400/50 disabled:opacity-35"
+              >
+                {sceneAgeOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </article>
         </div>
       </div>
     </section>

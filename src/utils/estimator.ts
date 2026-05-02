@@ -5,8 +5,7 @@ import {
   HEIGHT_MALE_SD_CM,
   TRAIT_DEV_MEAN,
   TRAIT_DEV_SD,
-  VITALITY_CENTER_DEV,
-  VITALITY_SPREAD_DEV,
+  getSceneAgeOption,
 } from '../data/assumptions';
 import type {
   GeneticEstimationResult,
@@ -227,15 +226,13 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
   }
 
   if (input.enabled.age) {
-    const d = clampDeviation(input.ageVitalityDeviation);
-    const rawRatio = normalCdf((d - VITALITY_CENTER_DEV) / VITALITY_SPREAD_DEV);
-    const ratio = clamp(rawRatio, 0.05, 1);
+    const option = getSceneAgeOption(input.sceneAgeId);
     appendStep(
       steps,
       'age',
-      `若さ・持久（界隈）偏差値 ${d}`,
-      ratio,
-      `累積 Φ((D−${VITALITY_CENTER_DEV})/${VITALITY_SPREAD_DEV})。高いほど係数が大きく若さ・スタミナ有利（尾モデルではない）。`,
+      `年代感：${option.label}`,
+      option.ratio,
+      `${option.note}（人口の尾確率ではなく、係数として掛ける）。`,
     );
   }
 

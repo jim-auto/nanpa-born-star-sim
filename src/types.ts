@@ -10,6 +10,9 @@ export type GeneticConditionId =
 
 export type EnabledGeneticConditions = Record<GeneticConditionId, boolean>;
 
+/** 見た目・スタミナの「年代感」（偏差値ではなく語で選ぶ）。 */
+export type SceneAgeId = 'early20s' | 'late20s' | 'early30s' | 'late30s' | 'early40sPlus';
+
 /** 各スライダーの共通レンジ（偏差値風スケール）。 */
 export const DEVIATION_MIN = 40;
 export const DEVIATION_MAX = 80;
@@ -24,8 +27,8 @@ export interface GeneticInput {
   physiqueDeviation: number;
   athleticDeviation: number;
   voiceAuraDeviation: number;
-  /** 界隈での「若さ・スタミナ」イメージ。累積側の係数（docs参照）。 */
-  ageVitalityDeviation: number;
+  /** 界隈での若さ・スタミナを年代帯でざっくり係数化（尾確率ではない）。 */
+  sceneAgeId: SceneAgeId;
 }
 
 export interface GeneticStep {
