@@ -1,6 +1,6 @@
 import type { GeneticConditionId, GeneticEstimationResult, GeneticInput, RarityTone } from '../types';
 import {
-  equivalentDeviationFromRatio,
+  equivalentDeviationFromCoefficient,
   formatPercent,
 } from '../utils/estimator';
 import {
@@ -58,21 +58,21 @@ export function ResultSummary({ result, input }: Props) {
       ? {
           id: 'age' as const,
           label: '年代',
-          value: Math.round(equivalentDeviationFromRatio(getSceneAgeOption(input.sceneAgeId).ratio)),
+          value: Math.round(equivalentDeviationFromCoefficient(getSceneAgeOption(input.sceneAgeId).ratio)),
         }
       : null,
     input.enabled.familyWealth
       ? {
           id: 'familyWealth' as const,
           label: '実家',
-          value: Math.round(equivalentDeviationFromRatio(getFamilyWealthOption(input.familyWealthId).ratio)),
+          value: Math.round(equivalentDeviationFromCoefficient(getFamilyWealthOption(input.familyWealthId).ratio)),
         }
       : null,
     input.enabled.birthRegion
       ? {
           id: 'birthRegion' as const,
           label: '地域',
-          value: Math.round(equivalentDeviationFromRatio(getBirthRegionOption(input.birthRegionId).ratio)),
+          value: Math.round(equivalentDeviationFromCoefficient(getBirthRegionOption(input.birthRegionId).ratio)),
         }
       : null,
   ].filter((item): item is { id: DeviationConditionId; label: string; value: number } => item !== null);

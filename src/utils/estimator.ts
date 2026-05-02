@@ -140,9 +140,17 @@ export function ratioFromTraitDeviation(deviation: number): number {
   return tailRatioNormal(d, TRAIT_DEV_MEAN, TRAIT_DEV_SD);
 }
 
-/** 係数や尾確率を、同じ「平均50・幅10」スケールの偏差値風表示に戻す。 */
+/** 尾確率を、同じ「平均50・幅10」スケールの偏差値風表示に戻す。 */
 export function equivalentDeviationFromRatio(ratio: number): number {
   const p = clamp(ratio, 1e-15, 1 - 1e-15);
+  const z = inverseStandardNormal(1 - p);
+  const raw = 50 + 10 * z;
+  return clamp(raw, DEVIATION_MIN, DEVIATION_MAX);
+}
+
+/** 係数 1.0 を中立（50付近）として、偏差値風に見える値へ換算する。 */
+export function equivalentDeviationFromCoefficient(ratio: number): number {
+  const p = clamp(ratio * 0.5, 1e-15, 0.5);
   const z = inverseStandardNormal(1 - p);
   const raw = 50 + 10 * z;
   return clamp(raw, DEVIATION_MIN, DEVIATION_MAX);
