@@ -299,7 +299,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     appendStep(
       steps,
       'age',
-      `年代感：${option.label}`,
+      `年齢帯：${option.label}`,
       option.ratio,
       `${option.note} 人口の何％かというより、場当たりの係数として掛けます。`,
     );

@@ -106,7 +106,7 @@ export function FilterPanel({ value, onChange }: Props) {
           <div>
             <h2 className="text-lg font-semibold text-white">星モジュール</h2>
             <p className="text-sm leading-relaxed text-white/62">
-              顔〜IQ は偏差値、年代・実家・地域は係数です。スライダーは {DEVIATION_MIN}–{DEVIATION_MAX}。
+              顔〜IQ は偏差値、年齢帯・実家・地域は係数です。スライダーは {DEVIATION_MIN}–{DEVIATION_MAX}。
             </p>
           </div>
           <fieldset className="flex gap-2 rounded-xl border border-white/10 bg-night-950/40 p-1">
@@ -183,9 +183,9 @@ export function FilterPanel({ value, onChange }: Props) {
           <article className="rounded-xl border border-white/10 bg-night-950/35 p-4 ring-1 ring-amber-500/15">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="text-sm font-semibold text-white">シーンの年代感</h3>
+                <h3 className="text-sm font-semibold text-white">見た目の年齢帯</h3>
                 <p className="mt-1 text-xs leading-relaxed text-white/55">
-                  実年齢そのものではなく、シーン上のラベルです。係数は机上の目安です。
+                  実年齢そのものではなく、見た目の印象です。係数は机上の目安です。
                 </p>
               </div>
               <Toggle
@@ -195,7 +195,7 @@ export function FilterPanel({ value, onChange }: Props) {
               />
             </div>
             <label className="mt-4 block text-xs text-white/55">
-              <span className="mb-2 block text-white/55">年代帯</span>
+              <span className="mb-2 block text-white/55">年齢帯</span>
               <select
                 disabled={!value.enabled.age}
                 value={value.sceneAgeId}
