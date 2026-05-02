@@ -1,7 +1,10 @@
 import type { GeneticConditionId, GeneticEstimationResult, GeneticInput, RarityTone } from '../types';
 import {
+  approximateHeightCmFromDeviation,
+  approximateIqFromDeviation,
   formatPercent,
 } from '../utils/estimator';
+import { getSceneAgeOption } from '../data/assumptions';
 
 const toneStyles: Record<
   RarityTone,
@@ -39,16 +42,52 @@ type DeviationConditionId = Extract<
   'face' | 'height' | 'physique' | 'athletic' | 'voiceAura' | 'iq'
 >;
 
+type SettingItem = {
+  id: DeviationConditionId | 'age';
+  label: string;
+  value: string;
+  detail: string | null;
+};
+
 export function ResultSummary({ result, input }: Props) {
   const tone = toneStyles[result.rarityTone];
-  const deviationItems = [
-    input.enabled.face ? { id: 'face' as const, label: '顔', value: input.faceDeviation } : null,
-    input.enabled.height ? { id: 'height' as const, label: '身長', value: input.heightDeviation } : null,
-    input.enabled.physique ? { id: 'physique' as const, label: '体格', value: input.physiqueDeviation } : null,
-    input.enabled.athletic ? { id: 'athletic' as const, label: '運動', value: input.athleticDeviation } : null,
-    input.enabled.voiceAura ? { id: 'voiceAura' as const, label: '声', value: input.voiceAuraDeviation } : null,
-    input.enabled.iq ? { id: 'iq' as const, label: 'IQ', value: input.iqDeviation } : null,
-  ].filter((item): item is { id: DeviationConditionId; label: string; value: number } => item !== null);
+  const deviationItems: SettingItem[] = [];
+  if (input.enabled.face) {
+    deviationItems.push({ id: 'face', label: '顔', value: `${input.faceDeviation}`, detail: null });
+  }
+  if (input.enabled.height) {
+    deviationItems.push({
+      id: 'height',
+      label: '身長',
+      value: `${input.heightDeviation}`,
+      detail: `${approximateHeightCmFromDeviation(input.heightDeviation, input.gender).toFixed(1)} cm`,
+    });
+  }
+  if (input.enabled.physique) {
+    deviationItems.push({ id: 'physique', label: '体格', value: `${input.physiqueDeviation}`, detail: null });
+  }
+  if (input.enabled.athletic) {
+    deviationItems.push({ id: 'athletic', label: '運動', value: `${input.athleticDeviation}`, detail: null });
+  }
+  if (input.enabled.voiceAura) {
+    deviationItems.push({ id: 'voiceAura', label: '声', value: `${input.voiceAuraDeviation}`, detail: null });
+  }
+  if (input.enabled.iq) {
+    deviationItems.push({
+      id: 'iq',
+      label: 'IQ',
+      value: `${input.iqDeviation}`,
+      detail: `目安 IQ ${approximateIqFromDeviation(input.iqDeviation).toFixed(0)}`,
+    });
+  }
+  if (input.enabled.age) {
+    deviationItems.push({
+      id: 'age',
+      label: '外見年齢',
+      value: getSceneAgeOption(input.sceneAgeId).label,
+      detail: null,
+    });
+  }
 
   return (
     <section className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md">
@@ -102,7 +141,7 @@ export function ResultSummary({ result, input }: Props) {
 
       <div className="mt-4 rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-[0.7rem] tracking-wide text-white/52">いまの偏差値</p>
+          <p className="text-[0.7rem] tracking-wide text-white/52">いまの設定</p>
           <a
             href="#method-notes"
             className="inline-flex rounded-full border border-star-300/25 bg-star-500/10 px-3 py-1 text-xs font-medium text-star-100 transition hover:border-star-300/45 hover:bg-star-500/20"
@@ -118,6 +157,7 @@ export function ResultSummary({ result, input }: Props) {
             >
               <p className="text-[0.72rem] text-white/55">{item.label}</p>
               <p className="mt-1 text-lg font-semibold tabular-nums text-white">{item.value}</p>
+              {item.detail ? <p className="mt-1 text-[0.72rem] text-white/45">{item.detail}</p> : null}
             </div>
           ))}
         </div>
