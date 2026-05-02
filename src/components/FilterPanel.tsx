@@ -1,7 +1,18 @@
-import { sceneAgeOptions } from '../data/assumptions';
-import type { Gender, GeneticConditionId, GeneticInput, SceneAgeId } from '../types';
+import {
+  birthRegionOptions,
+  familyWealthOptions,
+  sceneAgeOptions,
+} from '../data/assumptions';
+import type {
+  BirthRegionId,
+  FamilyWealthId,
+  Gender,
+  GeneticConditionId,
+  GeneticInput,
+  SceneAgeId,
+} from '../types';
 import { DEVIATION_MAX, DEVIATION_MIN } from '../types';
-import { approximateHeightCmFromDeviation } from '../utils/estimator';
+import { approximateHeightCmFromDeviation, approximateIqFromDeviation } from '../utils/estimator';
 
 interface Props {
   value: GeneticInput;
@@ -13,24 +24,36 @@ type DeviationField =
   | 'heightDeviation'
   | 'physiqueDeviation'
   | 'athleticDeviation'
-  | 'voiceAuraDeviation';
+  | 'voiceAuraDeviation'
+  | 'iqDeviation';
 
-const DEVIATION_MODULES: {
-  id: Exclude<GeneticConditionId, 'age'>;
+type DeviationModuleConfig = {
+  id: Exclude<GeneticConditionId, 'age' | 'familyWealth' | 'birthRegion'>;
   title: string;
   description: string;
   field: DeviationField;
-}[] = [
-  { id: 'face', title: '顔面偏差値', description: `尾モデル N(50,10)・${DEVIATION_MIN}–${DEVIATION_MAX}`, field: 'faceDeviation' },
+  hint: 'none' | 'cm' | 'iq';
+};
+
+const DEVIATION_MODULES: DeviationModuleConfig[] = [
+  { id: 'face', title: '顔面偏差値', description: `尾モデル N(50,10)・${DEVIATION_MIN}–${DEVIATION_MAX}`, field: 'faceDeviation', hint: 'none' },
   {
     id: 'height',
     title: '身長偏差値',
-    description: `同じ z を性別別身長分布へ写像・目安 cm 表示（${DEVIATION_MIN}–${DEVIATION_MAX}）`,
+    description: `性別別身長へ写像・目安 cm（${DEVIATION_MIN}–${DEVIATION_MAX}）`,
     field: 'heightDeviation',
+    hint: 'cm',
   },
-  { id: 'physique', title: '体格偏差値', description: '骨格・筋肉の先天イメージ（尾モデル）', field: 'physiqueDeviation' },
-  { id: 'athletic', title: '運動神経偏差値', description: '協調・瞬発など（尾モデル）', field: 'athleticDeviation' },
-  { id: 'voiceAura', title: '声・オーラ偏差値', description: '主観強め・同一スケールの尾仮定', field: 'voiceAuraDeviation' },
+  { id: 'physique', title: '体格偏差値', description: '骨格・筋肉イメージ（尾モデル）', field: 'physiqueDeviation', hint: 'none' },
+  { id: 'athletic', title: '運動神経偏差値', description: '協調・瞬発など（尾モデル）', field: 'athleticDeviation', hint: 'none' },
+  { id: 'voiceAura', title: '声・オーラ偏差値', description: '主観強め・同一スケールの尾仮定', field: 'voiceAuraDeviation', hint: 'none' },
+  {
+    id: 'iq',
+    title: 'IQ（偏差値スライダー）',
+    description: `目安 IQ は 100+15×z（D=${DEVIATION_MIN}–${DEVIATION_MAX}）。尾は N(100,15)。`,
+    field: 'iqDeviation',
+    hint: 'iq',
+  },
 ];
 
 function Toggle({
@@ -75,9 +98,10 @@ export function FilterPanel({ value, onChange }: Props) {
       <div className="flex flex-col gap-6">
         <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-white">先天性モジュール</h2>
+            <h2 className="text-lg font-semibold text-white">星モジュール</h2>
             <p className="text-sm text-white/50">
-              顔・身長・体格・運動・声は偏差値 {DEVIATION_MIN}–{DEVIATION_MAX}。年代感だけ下のプルダウンで選びます（わかりやすさ優先）。
+              顔〜IQ は偏差値スライダー。年代・実家・地域はプルダウン（係数）。すべて {DEVIATION_MIN}–{DEVIATION_MAX}
+              はスライダー共通レンジです。
             </p>
           </div>
           <fieldset className="flex gap-2 rounded-xl border border-white/10 bg-night-950/40 p-1">
@@ -103,9 +127,8 @@ export function FilterPanel({ value, onChange }: Props) {
           {DEVIATION_MODULES.map((meta) => {
             const dev = value[meta.field];
             const hintCm =
-              meta.id === 'height'
-                ? approximateHeightCmFromDeviation(dev, value.gender).toFixed(1)
-                : null;
+              meta.hint === 'cm' ? approximateHeightCmFromDeviation(dev, value.gender).toFixed(1) : null;
+            const hintIq = meta.hint === 'iq' ? approximateIqFromDeviation(dev).toFixed(0) : null;
 
             return (
               <article
@@ -132,6 +155,9 @@ export function FilterPanel({ value, onChange }: Props) {
                       {hintCm !== null ? (
                         <span className="ml-2 text-white/50">（目安 {hintCm} cm）</span>
                       ) : null}
+                      {hintIq !== null ? (
+                        <span className="ml-2 text-white/50">（目安 IQ {hintIq}）</span>
+                      ) : null}
                     </span>
                   </div>
                   <input
@@ -154,7 +180,7 @@ export function FilterPanel({ value, onChange }: Props) {
               <div>
                 <h3 className="text-sm font-semibold text-white">見た目・スタミナの年代感</h3>
                 <p className="mt-1 text-xs text-white/45">
-                  実年齢そのものではなく「夜のシーンでどう見える／キレるか」のラベル。係数はフェルミ（偏差値ではありません）。
+                  実年齢そのものではなくシーン上のラベル。係数はフェルミ。
                 </p>
               </div>
               <Toggle
@@ -163,7 +189,6 @@ export function FilterPanel({ value, onChange }: Props) {
                 label="反映"
               />
             </div>
-
             <label className="mt-4 block text-xs text-white/55">
               <span className="mb-2 block text-white/55">年代帯</span>
               <select
@@ -175,6 +200,74 @@ export function FilterPanel({ value, onChange }: Props) {
                 className="w-full rounded-lg border border-white/15 bg-night-900/80 px-3 py-2.5 text-sm text-white outline-none focus:border-amber-400/50 disabled:opacity-35"
               >
                 {sceneAgeOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </article>
+
+          <article className="rounded-xl border border-white/10 bg-night-950/35 p-4 ring-1 ring-sky-500/15">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-semibold text-white">実家の太さ</h3>
+                <p className="mt-1 text-xs text-white/45">おカネの余裕イメージ（主観係数）。</p>
+              </div>
+              <Toggle
+                checked={value.enabled.familyWealth}
+                onCheckedChange={(checked) => setEnabled('familyWealth', checked)}
+                label="反映"
+              />
+            </div>
+            <label className="mt-4 block text-xs text-white/55">
+              <span className="mb-2 block text-white/55">ギャップ感</span>
+              <select
+                disabled={!value.enabled.familyWealth}
+                value={value.familyWealthId}
+                onChange={(event) =>
+                  onChange({
+                    ...value,
+                    familyWealthId: event.target.value as FamilyWealthId,
+                  })
+                }
+                className="w-full rounded-lg border border-white/15 bg-night-900/80 px-3 py-2.5 text-sm text-white outline-none focus:border-sky-400/50 disabled:opacity-35"
+              >
+                {familyWealthOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </article>
+
+          <article className="rounded-xl border border-white/10 bg-night-950/35 p-4 ring-1 ring-teal-500/15">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-semibold text-white">育ちの地域</h3>
+                <p className="mt-1 text-xs text-white/45">都会感・マナーの前提などをラベルで雑に割り当て（係数）。</p>
+              </div>
+              <Toggle
+                checked={value.enabled.birthRegion}
+                onCheckedChange={(checked) => setEnabled('birthRegion', checked)}
+                label="反映"
+              />
+            </div>
+            <label className="mt-4 block text-xs text-white/55">
+              <span className="mb-2 block text-white/55">イメージ</span>
+              <select
+                disabled={!value.enabled.birthRegion}
+                value={value.birthRegionId}
+                onChange={(event) =>
+                  onChange({
+                    ...value,
+                    birthRegionId: event.target.value as BirthRegionId,
+                  })
+                }
+                className="w-full rounded-lg border border-white/15 bg-night-900/80 px-3 py-2.5 text-sm text-white outline-none focus:border-teal-400/50 disabled:opacity-35"
+              >
+                {birthRegionOptions.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.label}
                   </option>

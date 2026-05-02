@@ -38,7 +38,7 @@ export function ResultSummary({ result }: Props) {
     <section className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs tracking-wide text-white/45 uppercase">遺伝子偏差値（モデル依存）</p>
+          <p className="text-xs tracking-wide text-white/45 uppercase">生まれた星偏差値（モデル依存）</p>
           <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
             {result.geneticDeviation.toFixed(1)}
           </p>

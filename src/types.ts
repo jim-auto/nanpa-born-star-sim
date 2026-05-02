@@ -6,30 +6,41 @@ export type GeneticConditionId =
   | 'physique'
   | 'athletic'
   | 'voiceAura'
-  | 'age';
+  | 'iq'
+  | 'age'
+  | 'familyWealth'
+  | 'birthRegion';
 
 export type EnabledGeneticConditions = Record<GeneticConditionId, boolean>;
 
-/** 見た目・スタミナの「年代感」（偏差値ではなく語で選ぶ）。 */
-export type SceneAgeId = 'early20s' | 'late20s' | 'early30s' | 'late30s' | 'early40sPlus';
+export type SceneAgeId =
+  | 'lateTeens'
+  | 'early20s'
+  | 'late20s'
+  | 'early30s'
+  | 'late30s'
+  | 'early40sPlus';
 
-/** 各スライダーの共通レンジ（偏差値風スケール）。 */
-/** 凡〜神で表示に幅を出すため、教科書の偏差値よりやや広め。 */
+export type FamilyWealthId = 'modest' | 'averageFw' | 'comfortable' | 'wealthy' | 'dynasty';
+
+export type BirthRegionId = 'rural' | 'regionalCity' | 'metro' | 'tokyo23' | 'abroad';
+
 export const DEVIATION_MIN = 35;
 export const DEVIATION_MAX = 85;
 
 export interface GeneticInput {
-  /** 身長の目安 cm 換算に利用。デフォルトは男性。 */
   gender: Gender;
   enabled: EnabledGeneticConditions;
   faceDeviation: number;
-  /** 身長（偏差値）。内部で z=(D−50)/10 を身長分布に写像して尾確率を計算。 */
   heightDeviation: number;
   physiqueDeviation: number;
   athleticDeviation: number;
   voiceAuraDeviation: number;
-  /** 界隈での若さ・スタミナを年代帯でざっくり係数化（尾確率ではない）。 */
+  /** スライダーは「偏差値風」。内部で IQ 目安 → N(100,15) の尾。 */
+  iqDeviation: number;
   sceneAgeId: SceneAgeId;
+  familyWealthId: FamilyWealthId;
+  birthRegionId: BirthRegionId;
 }
 
 export interface GeneticStep {

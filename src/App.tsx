@@ -19,11 +19,11 @@ export default function App() {
           Nanpa scene · Fermi toy
         </p>
         <h1 className="text-balance text-3xl font-semibold text-white sm:text-4xl">
-          遺伝子偏差値シミュレーター
+          生まれた星偏差値診断
         </h1>
         <p className="max-w-3xl text-pretty text-sm leading-relaxed text-white/60">
-          <strong className="font-medium text-white/80">先天性っぽい項目</strong>
-          だけを拾い、それぞれの「比」を順にかけ算してざっくり並べています。話し方の上手さ・その場のノリ・項目どうしのつながりは入っていません。
+          <strong className="font-medium text-white/80">顔・身長・IQ・実家・地域</strong>
+          などをバラバラに拾い、「比」を順にかけ算しただけの机上診断です。話し方・ノリ・項目どうしの関係は無視。
           <span className="text-white/45">真面目な予測ではなく暇つぶしのフェルミです。</span>
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

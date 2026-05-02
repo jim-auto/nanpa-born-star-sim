@@ -3,8 +3,12 @@ import {
   HEIGHT_FEMALE_SD_CM,
   HEIGHT_MALE_MEAN_CM,
   HEIGHT_MALE_SD_CM,
+  IQ_POP_MEAN,
+  IQ_POP_SD,
   TRAIT_DEV_MEAN,
   TRAIT_DEV_SD,
+  getBirthRegionOption,
+  getFamilyWealthOption,
   getSceneAgeOption,
 } from '../data/assumptions';
 import type {
@@ -122,9 +126,12 @@ function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone:
     return { rarityLabel: '絞り込み強めでもまだ現実味', rarityTone: 'rare' };
   }
   if (finalRatio < 0.08) {
-    return { rarityLabel: 'コミュニティ平均より上の可能性', rarityTone: 'narrow' };
+    return { rarityLabel: 'かけ算だけ見ると、やや絞られ気味', rarityTone: 'narrow' };
   }
-  return { rarityLabel: '母集団としては広め（上手さは別問題）', rarityTone: 'reasonable' };
+  return {
+    rarityLabel: 'かけ算だけだと、そこまでレアじゃない帯（話の上手さは見ていません）',
+    rarityTone: 'reasonable',
+  };
 }
 
 /** 尾確率モデル：「その偏差値以上」を N(TRAIT_DEV_MEAN, TRAIT_DEV_SD) で解釈。 */
@@ -142,8 +149,15 @@ export function approximateHeightCmFromDeviation(deviation: number, gender: Gend
   return mean + z * sd;
 }
 
+/** スライダー D を IQ 目安に換算（平均100・SD15 のスケールに載せるフェルミ）。 */
+export function approximateIqFromDeviation(deviation: number): number {
+  const d = clampDeviation(deviation);
+  const z = (d - TRAIT_DEV_MEAN) / TRAIT_DEV_SD;
+  return IQ_POP_MEAN + IQ_POP_SD * z;
+}
+
 /**
- * 表示用「遺伝子偏差値」。各モジュールの比を掛けた積 p は因子が増えるほど極端に小さくなるため、
+ * 表示用「生まれた星偏差値」。各モジュールの比を掛けた積 p は因子が増えるほど極端に小さくなるため、
  * 独立近似の下で p^(1/n) を「典型的な一因子あたりの尾イメージ」に写像してから z を取る。
  * 各因子が中央（尾～0.5）なら出力が～50付近に寄る。
  */
@@ -162,7 +176,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
   const steps: GeneticStep[] = [
     {
       id: 'base',
-      label: `ベース（${genderLabelJp}・先天性モジュールを独立に掛け合わせる）`,
+      label: `ベース（${genderLabelJp}・星モジュールを独立に掛け合わせる）`,
       ratio: 1,
       remaining: 1,
       note: '暇つぶし用のフェルミ。項目どうしの関係は無視。',
@@ -232,6 +246,19 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
     );
   }
 
+  if (input.enabled.iq) {
+    const d = clampDeviation(input.iqDeviation);
+    const iqLine = approximateIqFromDeviation(d);
+    const ratio = tailRatioNormal(iqLine, IQ_POP_MEAN, IQ_POP_SD);
+    appendStep(
+      steps,
+      'iq',
+      `IQ 目安 ${iqLine.toFixed(0)} 以上（N(${IQ_POP_MEAN},${IQ_POP_SD}) の尾）`,
+      ratio,
+      `スライダーは偏差値風 D とし、IQ 目安 = ${IQ_POP_MEAN} + ${IQ_POP_SD}×(D−${TRAIT_DEV_MEAN})/${TRAIT_DEV_SD}。実検査ではありません。`,
+    );
+  }
+
   if (input.enabled.age) {
     const option = getSceneAgeOption(input.sceneAgeId);
     appendStep(
@@ -240,6 +267,28 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
       `年代感：${option.label}`,
       option.ratio,
       `${option.note}（人口の尾確率ではなく、係数として掛ける）。`,
+    );
+  }
+
+  if (input.enabled.familyWealth) {
+    const option = getFamilyWealthOption(input.familyWealthId);
+    appendStep(
+      steps,
+      'familyWealth',
+      `実家の太さ：${option.label}`,
+      option.ratio,
+      `${option.note}（尾確率ではなく係数）。`,
+    );
+  }
+
+  if (input.enabled.birthRegion) {
+    const option = getBirthRegionOption(input.birthRegionId);
+    appendStep(
+      steps,
+      'birthRegion',
+      `育ちの地域：${option.label}`,
+      option.ratio,
+      `${option.note}（尾確率ではなく係数）。`,
     );
   }
 
