@@ -161,7 +161,7 @@ export function equivalentDeviationFromCoefficient(
   const clampedRank = rank >= 0 ? rank : uniqueRatios.length - 1;
   const percentile = 1 - (clampedRank + 0.5) / Math.max(uniqueRatios.length, 1);
   const p = clamp(percentile, 1e-15, 1 - 1e-15);
-  const z = inverseStandardNormal(1 - p);
+  const z = inverseStandardNormal(p);
   const raw = 50 + 10 * z;
   return clamp(raw, DEVIATION_MIN, DEVIATION_MAX);
 }
