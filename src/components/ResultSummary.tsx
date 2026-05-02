@@ -38,16 +38,18 @@ export function ResultSummary({ result }: Props) {
     <section className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs tracking-wide text-white/45 uppercase">生まれた星偏差値（モデル依存）</p>
+          <p className="text-xs tracking-wide text-white/45 uppercase">生まれた星偏差値</p>
+          <p className="mt-0.5 text-[0.65rem] text-white/35">このアプリだけの目安（統計の公式値ではありません）</p>
           <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
             {result.geneticDeviation.toFixed(1)}
           </p>
           <p className="mt-2 text-sm text-white/55">
-            各モジュールの「比」をかけた結果{' '}
+            オンにした条件を<strong className="font-medium text-white/75">全部そろえたときの割合</strong>（想像）{' '}
             <span className="font-medium text-white/85">{formatPercent(result.finalRatio)}</span>
           </p>
-          <p className="mt-1 text-xs text-white/38">
-            実在の調査値ではなく、独立に掛け合わせたフェルミ用の割合です。
+          <p className="mt-1 text-xs leading-relaxed text-white/38">
+            各項目に「こんな人がどれくらいいそう」という比率を付け、それを<strong className="font-medium text-white/55">順に掛け合わせた数</strong>
+            です。会話のうまさや、その日のノリは含みません。
           </p>
         </div>
         <div
@@ -55,7 +57,7 @@ export function ResultSummary({ result }: Props) {
         >
           <p className={`text-sm font-medium ${tone.text}`}>{result.rarityLabel}</p>
           <p className="mt-1 text-xs text-white/45">
-            有効モジュール {result.enabledFactorCount} 個・基準：{result.genderLabel}
+            オン中のモジュール {result.enabledFactorCount} 個・身長の目安は{result.genderLabel}基準
           </p>
         </div>
       </div>

@@ -23,7 +23,8 @@ export default function App() {
         </h1>
         <p className="max-w-3xl text-pretty text-sm leading-relaxed text-white/60">
           <strong className="font-medium text-white/80">顔・身長・IQ・実家・地域</strong>
-          などをバラバラに拾い、「比」を順にかけ算しただけの机上診断です。話し方・ノリ・項目どうしの関係は無視。
+          などをバラバラに拾い、それぞれの比率を<strong className="font-medium text-white/80">順に掛け合わせただけ</strong>
+          の机上診断です。話し方・ノリ・項目どうしの関係は無視。
           <span className="text-white/45">真面目な予測ではなく暇つぶしのフェルミです。</span>
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

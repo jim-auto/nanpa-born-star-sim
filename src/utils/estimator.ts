@@ -114,22 +114,22 @@ function appendStep(steps: GeneticStep[], id: string, label: string, ratio: numb
 
 function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone: RarityTone } {
   if (finalRatio <= 1e-6) {
-    return { rarityLabel: '都市伝説クラス（数値が極小）', rarityTone: 'mythic' };
+    return { rarityLabel: '都市伝説級：全部そろうと割合がとてつもなく小さい', rarityTone: 'mythic' };
   }
   if (finalRatio < 1e-4) {
-    return { rarityLabel: 'SSR帯：かけ算結果が極端に小さい', rarityTone: 'mythic' };
+    return { rarityLabel: 'かなり狭い：全部そろうとめったにいないイメージ', rarityTone: 'mythic' };
   }
   if (finalRatio < 1e-3) {
-    return { rarityLabel: 'かなりハイスペ寄り', rarityTone: 'rare' };
+    return { rarityLabel: 'ハイスペ寄り（このシミュ上）', rarityTone: 'rare' };
   }
   if (finalRatio < 0.01) {
-    return { rarityLabel: '絞り込み強めでもまだ現実味', rarityTone: 'rare' };
+    return { rarityLabel: '条件はキツめでも「あり得る」側の帯', rarityTone: 'rare' };
   }
   if (finalRatio < 0.08) {
-    return { rarityLabel: 'かけ算だけ見ると、やや絞られ気味', rarityTone: 'narrow' };
+    return { rarityLabel: '条件を足すと、だいぶ絞られるイメージ', rarityTone: 'narrow' };
   }
   return {
-    rarityLabel: 'かけ算だけだと、そこまでレアじゃない帯（話の上手さは見ていません）',
+    rarityLabel: 'このシミュ上では、めずらしすぎない組み合わせ（話し方は見ていません）',
     rarityTone: 'reasonable',
   };
 }
