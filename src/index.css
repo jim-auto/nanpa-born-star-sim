@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'DM Sans', 'Hiragino Sans', 'Yu Gothic UI', system-ui, sans-serif;
+  --color-night-950: #0b0a12;
+  --color-night-900: #12101c;
+  --color-night-800: #1c1830;
+  --color-star-400: #b388ff;
+  --color-star-500: #9d6bff;
+  --color-star-300: #d4b8ff;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgb(157 107 255 / 0.22), transparent),
+    linear-gradient(180deg, var(--color-night-950) 0%, var(--color-night-900) 40%, #0a0814 100%);
+  color: #ece8f7;
+}
