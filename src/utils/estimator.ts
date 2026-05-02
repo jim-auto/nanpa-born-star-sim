@@ -113,7 +113,7 @@ function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone:
     return { rarityLabel: '都市伝説クラス（数値が極小）', rarityTone: 'mythic' };
   }
   if (finalRatio < 1e-4) {
-    return { rarityLabel: 'SSR帯：説明つかない残存率', rarityTone: 'mythic' };
+    return { rarityLabel: 'SSR帯：かけ算結果が極端に小さい', rarityTone: 'mythic' };
   }
   if (finalRatio < 1e-3) {
     return { rarityLabel: 'かなりハイスペ寄り', rarityTone: 'rare' };
@@ -124,7 +124,7 @@ function rarityFromRatio(finalRatio: number): { rarityLabel: string; rarityTone:
   if (finalRatio < 0.08) {
     return { rarityLabel: 'コミュニティ平均より上の可能性', rarityTone: 'narrow' };
   }
-  return { rarityLabel: '母集団としては広め（技巧・努力別次元）', rarityTone: 'reasonable' };
+  return { rarityLabel: '母集団としては広め（上手さは別問題）', rarityTone: 'reasonable' };
 }
 
 /** 尾確率モデル：「その偏差値以上」を N(TRAIT_DEV_MEAN, TRAIT_DEV_SD) で解釈。 */
@@ -143,7 +143,7 @@ export function approximateHeightCmFromDeviation(deviation: number, gender: Gend
 }
 
 /**
- * 表示用「遺伝子偏差値」。連乗残存率 p は因子が増えるほど極端に小さくなるため、
+ * 表示用「遺伝子偏差値」。各モジュールの比を掛けた積 p は因子が増えるほど極端に小さくなるため、
  * 独立近似の下で p^(1/n) を「典型的な一因子あたりの尾イメージ」に写像してから z を取る。
  * 各因子が中央（尾～0.5）なら出力が～50付近に寄る。
  */
@@ -165,7 +165,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
       label: `ベース（${genderLabelJp}・先天性モジュールを独立に掛け合わせる）`,
       ratio: 1,
       remaining: 1,
-      note: '娯楽用フェルミ推定。因子間の相関は無視。',
+      note: '暇つぶし用のフェルミ。項目どうしの関係は無視。',
     },
   ];
 

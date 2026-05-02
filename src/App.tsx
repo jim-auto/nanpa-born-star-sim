@@ -22,10 +22,9 @@ export default function App() {
           遺伝子偏差値シミュレーター
         </h1>
         <p className="max-w-3xl text-pretty text-sm leading-relaxed text-white/60">
-          「生まれた星」を独自の比で乗算し、ナンパ界隈前提の<strong className="font-medium text-white/80">
-            先天性スペック
-          </strong>
-          をざっくり可視化します。相関・技巧・文脈は無視する娱乐モデルです。
+          <strong className="font-medium text-white/80">先天性っぽい項目</strong>
+          だけを拾い、それぞれの「比」を順にかけ算してざっくり並べています。話し方の上手さ・その場のノリ・項目どうしのつながりは入っていません。
+          <span className="text-white/45">真面目な予測ではなく暇つぶしのフェルミです。</span>
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <PresetButtons onSelect={setInput} />

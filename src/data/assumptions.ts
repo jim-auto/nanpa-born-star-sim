@@ -23,7 +23,7 @@ export interface SceneAgeOption {
   note: string;
 }
 
-/** 年代感ごとの係数（主観フェルミ）。若いほど連乗を緩めるイメージで 1.0 に近づける。 */
+/** 年代感ごとの係数（主観フェルミ）。若いほどかけ算を緩めるイメージで 1.0 に近づける。 */
 export const sceneAgeOptions: SceneAgeOption[] = [
   {
     id: 'early20s',

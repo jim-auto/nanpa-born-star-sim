@@ -43,8 +43,11 @@ export function ResultSummary({ result }: Props) {
             {result.geneticDeviation.toFixed(1)}
           </p>
           <p className="mt-2 text-sm text-white/55">
-            連乗後の残存率{' '}
+            各モジュールの「比」をかけた結果{' '}
             <span className="font-medium text-white/85">{formatPercent(result.finalRatio)}</span>
+          </p>
+          <p className="mt-1 text-xs text-white/38">
+            実在の調査値ではなく、独立に掛け合わせたフェルミ用の割合です。
           </p>
         </div>
         <div

@@ -67,7 +67,7 @@ export function SimulationCharts({ steps }: Props) {
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="rounded-2xl border border-white/10 bg-night-900/60 p-5">
         <div className="flex items-baseline justify-between gap-3">
-          <h3 className="text-sm font-semibold text-white">残存率ステップ（対数スケール）</h3>
+          <h3 className="text-sm font-semibold text-white">かけ算の推移（対数スケール）</h3>
           <p className="text-xs text-white/45">
             {formatPercent(maxRem)} → {formatPercent(minRem)}
           </p>
@@ -76,7 +76,7 @@ export function SimulationCharts({ steps }: Props) {
           className="mt-4 w-full text-star-400"
           viewBox={`0 0 ${width} ${height}`}
           role="img"
-          aria-label="各ステップ後の残存率の階段グラフ"
+          aria-label="モジュールを足すごとの、かけ算結果の割合の階段グラフ"
         >
           <defs>
             <linearGradient id="lineGlow" x1="0" x2="1" y1="0" y2="0">
@@ -102,7 +102,7 @@ export function SimulationCharts({ steps }: Props) {
           />
         </svg>
         <p className="mt-2 text-xs leading-relaxed text-white/45">
-          縦軸は log₁₀（残存率）。条件を足すほど折れ線が下がります。
+          縦軸は log₁₀（かけ算後の割合）。モジュールを足すほど折れ線が下がります。
         </p>
       </div>
 
