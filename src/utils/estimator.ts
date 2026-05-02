@@ -146,6 +146,32 @@ function perFactorEquivalentRatio(finalRatio: number, enabledFactorCount: number
   return Math.pow(clampedJoint, 1 / n);
 }
 
+export function modelTierShortJapanese(deviation: number): string {
+  const d = clampDeviation(deviation);
+  const pGe = ratioFromTraitDeviation(d);
+  if (pGe >= 0.35 && pGe <= 0.65) {
+    return '中央付近';
+  }
+  if (d >= TRAIT_DEV_MEAN) {
+    return `約上位 ${formatTierPercentPiece(pGe * 100)}`;
+  }
+  const pLo = (1 - pGe) * 100;
+  return `約下位 ${formatTierPercentPiece(pLo)}`;
+}
+
+function formatTierPercentPiece(x: number): string {
+  if (x >= 10) {
+    return `${x.toFixed(0)}%`;
+  }
+  if (x >= 1) {
+    return `${x.toFixed(1)}%`;
+  }
+  if (x >= 0.1) {
+    return `${x.toFixed(2)}%`;
+  }
+  return `${x.toPrecision(2)}%`;
+}
+
 /** 身長偏差値から目安 cm（表示用）。スライダーと身長の平均・幅をつなぐ。 */
 export function approximateHeightCmFromDeviation(deviation: number, gender: Gender): number {
   const d = clampDeviation(deviation);
