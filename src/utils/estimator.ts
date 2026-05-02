@@ -142,9 +142,16 @@ export function approximateHeightCmFromDeviation(deviation: number, gender: Gend
   return mean + z * sd;
 }
 
-/** 連続比率 p から「遺伝子偏差値」へ：上位側の希少度として z を割り当てる。 */
-export function geneticDeviationFromRatio(finalRatio: number): number {
-  const p = clamp(finalRatio, 1e-15, 1 - 1e-15);
+/**
+ * 表示用「遺伝子偏差値」。連乗残存率 p は因子が増えるほど極端に小さくなるため、
+ * 独立近似の下で p^(1/n) を「典型的な一因子あたりの尾イメージ」に写像してから z を取る。
+ * 各因子が中央（尾～0.5）なら出力が～50付近に寄る。
+ */
+export function geneticDeviationFromRatio(finalRatio: number, enabledFactorCount: number): number {
+  const n = Math.max(1, enabledFactorCount);
+  const clampedJoint = clamp(finalRatio, 1e-200, 1 - 1e-15);
+  const perFactorEquivalent = Math.pow(clampedJoint, 1 / n);
+  const p = clamp(perFactorEquivalent, 1e-15, 1 - 1e-15);
   const z = inverseStandardNormal(1 - p);
   const raw = 50 + 10 * z;
   return clamp(raw, 15, 92);
@@ -237,7 +244,11 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
   }
 
   const finalRatio = steps[steps.length - 1]!.remaining;
-  const geneticDeviation = geneticDeviationFromRatio(finalRatio);
+  const enabledFactorCount = steps.length - 1;
+  const geneticDeviation =
+    enabledFactorCount <= 0
+      ? 50
+      : geneticDeviationFromRatio(finalRatio, enabledFactorCount);
   const rarity = rarityFromRatio(finalRatio);
 
   return {
