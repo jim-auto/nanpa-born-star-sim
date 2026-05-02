@@ -55,20 +55,20 @@ export function ResultSummary({ result }: Props) {
                 {result.modelTierShortJa}
               </p>
               <p className="mt-1 text-xs leading-relaxed text-white/60">
-                スライダーと同じ「平均50・まわり10くらい」の目安に直した表示です。
+                実際の順位ではなく、偏差値っぽく見やすくした目安です。
               </p>
             </div>
           </div>
 
           <p className="mt-3 text-[0.75rem] leading-relaxed text-white/55">
-            複数条件を1本のスコアにまとめた目安です。
+            顔・身長・IQ などをまとめて見た総合スコアです。
           </p>
           <p className="mt-3 text-sm text-white/66">
-            <strong className="font-medium text-white/75">全部そろう割合</strong>（想像）{' '}
+            <strong className="font-medium text-white/75">この条件が全部そろう割合</strong>（想像）{' '}
             <span className="font-medium text-white/85">{formatPercent(result.finalRatio)}</span>
           </p>
           <p className="mt-1 text-xs leading-relaxed text-white/55">
-            各項目の比率を順に掛けた値です。
+            条件を足すほど、どれくらい絞られるかのイメージです。
           </p>
           <a
             href="#method-notes"
