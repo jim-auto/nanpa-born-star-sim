@@ -120,10 +120,12 @@ export function ResultSummary({ result, input }: Props) {
 
       <div className="mt-4 grid gap-3 lg:grid-cols-[11rem,minmax(0,1fr),15rem]">
         <div className="rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
-          <p className="text-[0.7rem] tracking-wide text-white/52">偏差値</p>
-          <p className="mt-1 font-semibold text-5xl text-white tabular-nums tracking-tight">
-            {result.geneticDeviation.toFixed(1)}
-          </p>
+          <div className="flex items-center justify-between gap-3">
+            <p className="shrink-0 text-base font-medium text-white/72">偏差値</p>
+            <p className="min-w-0 text-right text-4xl font-semibold tabular-nums tracking-tight text-white sm:text-5xl">
+              {result.geneticDeviation.toFixed(1)}
+            </p>
+          </div>
         </div>
 
         <div className="rounded-xl border border-star-300/18 bg-star-500/8 px-4 py-3">
@@ -144,7 +146,7 @@ export function ResultSummary({ result, input }: Props) {
 
       <div className="mt-4 rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-[0.7rem] tracking-wide text-white/52">いまの設定</p>
+          <p className="text-[0.7rem] tracking-wide text-white/52">設定した各偏差値</p>
           <a
             href="#method-notes"
             className="inline-flex rounded-full border border-star-300/25 bg-star-500/10 px-3 py-1 text-xs font-medium text-star-100 transition hover:border-star-300/45 hover:bg-star-500/20"
