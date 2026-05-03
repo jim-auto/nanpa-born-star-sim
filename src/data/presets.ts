@@ -57,12 +57,12 @@ export const presetMortalGenes: GeneticInput = {
   voiceAuraDeviation: 35,
   iqDeviation: 38,
   sceneAgeId: 'early40sPlus',
-  familyWealthId: 'modest',
-  birthRegionId: 'rural',
+  familyWealthId: 'modestAbsolute',
+  birthRegionId: 'ruralRemote',
 };
 
 export const presets = [
   { id: 'god', label: '神の星', input: presetGodGenes },
   { id: 'average', label: '平均の星', input: presetAverageBundle },
-  { id: 'mortal', label: '凡人の星', input: presetMortalGenes },
+  { id: 'mortal', label: '敗者の星', input: presetMortalGenes },
 ] as const;

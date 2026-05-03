@@ -85,8 +85,8 @@ export const familyWealthOptions: FamilyWealthOption[] = [
   {
     id: 'modestAbsolute',
     label: '実家は頼れないと言い切れる',
-    displayDeviation: 35,
-    note: '余裕がほとんどない寄りの帯。',
+    displayDeviation: 30,
+    note: 'このアプリの実家オプションでは最下位帯。',
   },
   {
     id: 'averageFw',
@@ -132,8 +132,8 @@ export const birthRegionOptions: BirthRegionOption[] = [
   {
     id: 'ruralRemote',
     label: '僻地・田舎寄り',
-    displayDeviation: 35,
-    note: '地方都市よりずっとローカルな帯。',
+    displayDeviation: 30,
+    note: 'このアプリの地域オプションでは最下位帯。',
   },
   {
     id: 'regionalCity',

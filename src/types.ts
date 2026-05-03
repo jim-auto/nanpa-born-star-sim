@@ -40,6 +40,9 @@ export type BirthRegionId =
 export const DEVIATION_MIN = 35;
 export const DEVIATION_MAX = 85;
 
+/** プルダウン表示偏差値の下限（スライダーより低く取れる・最下位帯用）。 */
+export const PULLDOWN_DEVIATION_MIN = 30;
+
 export interface GeneticInput {
   gender: Gender;
   enabled: EnabledGeneticConditions;
