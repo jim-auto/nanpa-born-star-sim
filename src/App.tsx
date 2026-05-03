@@ -30,7 +30,7 @@ export default function App() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <PresetButtons onSelect={setInput} />
           <p className="text-xs leading-relaxed text-white/58">
-            迷ったら「平均の星」から顔・身長・IQだけ動かすと見やすいです。
+            迷ったら「凡人の星」から顔・身長・IQだけ動かすと見やすいです。
           </p>
         </div>
       </header>

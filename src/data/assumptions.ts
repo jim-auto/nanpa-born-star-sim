@@ -77,39 +77,39 @@ export interface FamilyWealthOption {
 /** 実家の太さの偏差値目安。 */
 export const familyWealthOptions: FamilyWealthOption[] = [
   {
-    id: 'modest',
-    label: '実家は頼りにくい／ギリギリ',
-    displayDeviation: 35,
-    note: '余裕が少ない寄りの帯。',
-  },
-  {
     id: 'modestAbsolute',
     label: '実家は頼れないと言い切れる',
-    displayDeviation: 30,
+    displayDeviation: 35,
     note: 'このアプリの実家オプションでは最下位帯。',
+  },
+  {
+    id: 'modest',
+    label: '実家は頼りにくい／ギリギリ',
+    displayDeviation: 40,
+    note: '余裕が少ない寄りの帯。',
   },
   {
     id: 'averageFw',
     label: '一般的な中流',
-    displayDeviation: 45,
+    displayDeviation: 47,
     note: '平均的な中流イメージ。',
   },
   {
     id: 'comfortable',
     label: '余裕あり（趣味・服にお金が回る）',
-    displayDeviation: 55,
+    displayDeviation: 54,
     note: 'やや余裕がある帯。',
   },
   {
     id: 'wealthy',
     label: 'かなり太い',
-    displayDeviation: 65,
+    displayDeviation: 62,
     note: 'かなり恵まれた帯。',
   },
   {
     id: 'dynasty',
     label: '資産家級（想像の範囲）',
-    displayDeviation: 75,
+    displayDeviation: 72,
     note: 'かなり強い上位帯のイメージ。',
   },
 ];
@@ -124,40 +124,40 @@ export interface BirthRegionOption {
 /** 地域イメージの偏差値目安。 */
 export const birthRegionOptions: BirthRegionOption[] = [
   {
-    id: 'rural',
-    label: '地方（地方都市以外）',
-    displayDeviation: 35,
-    note: '地方寄りの帯。',
-  },
-  {
     id: 'ruralRemote',
     label: '僻地・田舎寄り',
-    displayDeviation: 30,
+    displayDeviation: 35,
     note: 'このアプリの地域オプションでは最下位帯。',
+  },
+  {
+    id: 'rural',
+    label: '地方（地方都市以外）',
+    displayDeviation: 40,
+    note: '地方寄りの帯。',
   },
   {
     id: 'regionalCity',
     label: '地方都市',
-    displayDeviation: 45,
+    displayDeviation: 47,
     note: '地方の中では都会寄り。',
   },
   {
     id: 'metro',
     label: '大都市圏（関東・関西など）',
-    displayDeviation: 55,
+    displayDeviation: 54,
     note: '大都市圏寄りの帯。',
-  },
-  {
-    id: 'tokyo23',
-    label: '東京23区ベース',
-    displayDeviation: 75,
-    note: 'かなり都市寄りの帯。',
   },
   {
     id: 'abroad',
     label: '海外／多文化環境',
-    displayDeviation: 65,
+    displayDeviation: 62,
     note: 'かなりレア寄りの帯。',
+  },
+  {
+    id: 'tokyo23',
+    label: '東京23区ベース',
+    displayDeviation: 73,
+    note: 'かなり都市寄りの帯。',
   },
 ];
 

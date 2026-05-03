@@ -27,7 +27,7 @@ export const presetAverageBundle: GeneticInput = {
   birthRegionId: 'regionalCity',
 };
 
-/** アプリ初回表示＝「平均の星」と同じ内容（別オブジェクト） */
+/** アプリ初回表示＝「凡人の星」プリセットと同じ内容（別オブジェクト） */
 export const defaultGeneticInput: GeneticInput = {
   ...presetAverageBundle,
   enabled: { ...presetAverageBundle.enabled },
@@ -62,7 +62,7 @@ export const presetMortalGenes: GeneticInput = {
 };
 
 export const presets = [
-  { id: 'god', label: '神の星', input: presetGodGenes },
-  { id: 'average', label: '平均の星', input: presetAverageBundle },
+  { id: 'god', label: '勝者の星', input: presetGodGenes },
+  { id: 'average', label: '凡人の星', input: presetAverageBundle },
   { id: 'mortal', label: '敗者の星', input: presetMortalGenes },
 ] as const;

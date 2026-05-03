@@ -18,7 +18,7 @@ import type {
   Gender,
   RarityTone,
 } from '../types';
-import { DEVIATION_MAX, DEVIATION_MIN, PULLDOWN_DEVIATION_MIN } from '../types';
+import { DEVIATION_MAX, DEVIATION_MIN } from '../types';
 
 function erfApprox(x: number): number {
   const sign = x < 0 ? -1 : 1;
@@ -95,16 +95,6 @@ function clamp(n: number, min: number, max: number): number {
 
 function clampDeviation(n: number): number {
   return clamp(n, DEVIATION_MIN, DEVIATION_MAX);
-}
-
-function clampPulldownDeviation(n: number): number {
-  return clamp(n, PULLDOWN_DEVIATION_MIN, DEVIATION_MAX);
-}
-
-/** 年齢帯・実家・地域プルダウンの表示偏差値用（30–85）。スライダーは 35–85。 */
-function ratioFromPulldownDeviation(deviation: number): number {
-  const d = clampPulldownDeviation(deviation);
-  return tailRatioNormal(d, TRAIT_DEV_MEAN, TRAIT_DEV_SD);
 }
 
 function genderLabel(gender: Gender): string {
@@ -306,7 +296,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
 
   if (input.enabled.age) {
     const option = getSceneAgeOption(input.sceneAgeId);
-    const ratio = ratioFromPulldownDeviation(option.displayDeviation);
+    const ratio = ratioFromTraitDeviation(option.displayDeviation);
     appendStep(
       steps,
       'age',
@@ -318,7 +308,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
 
   if (input.enabled.familyWealth) {
     const option = getFamilyWealthOption(input.familyWealthId);
-    const ratio = ratioFromPulldownDeviation(option.displayDeviation);
+    const ratio = ratioFromTraitDeviation(option.displayDeviation);
     appendStep(
       steps,
       'familyWealth',
@@ -330,7 +320,7 @@ export function estimateGeneticStrength(input: GeneticInput): GeneticEstimationR
 
   if (input.enabled.birthRegion) {
     const option = getBirthRegionOption(input.birthRegionId);
-    const ratio = ratioFromPulldownDeviation(option.displayDeviation);
+    const ratio = ratioFromTraitDeviation(option.displayDeviation);
     appendStep(
       steps,
       'birthRegion',

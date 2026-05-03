@@ -120,9 +120,9 @@ export function ResultSummary({ result, input }: Props) {
 
       <div className="mt-4 grid gap-3 lg:grid-cols-[11rem,minmax(0,1fr),15rem]">
         <div className="rounded-xl border border-white/10 bg-night-950/35 px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <p className="shrink-0 text-base font-medium text-white/72">偏差値</p>
-            <p className="min-w-0 text-right text-4xl font-semibold tabular-nums tracking-tight text-white sm:text-5xl">
+          <div className="flex flex-col gap-1">
+            <p className="text-sm font-medium text-white/72">偏差値</p>
+            <p className="text-right text-7xl font-semibold tabular-nums leading-[0.92] tracking-tighter text-white sm:text-8xl lg:text-[4.5rem] lg:leading-[0.9]">
               {result.geneticDeviation.toFixed(1)}
             </p>
           </div>
