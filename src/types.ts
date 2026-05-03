@@ -21,9 +21,21 @@ export type SceneAgeId =
   | 'late30s'
   | 'early40sPlus';
 
-export type FamilyWealthId = 'modest' | 'averageFw' | 'comfortable' | 'wealthy' | 'dynasty';
+export type FamilyWealthId =
+  | 'modest'
+  | 'modestAbsolute'
+  | 'averageFw'
+  | 'comfortable'
+  | 'wealthy'
+  | 'dynasty';
 
-export type BirthRegionId = 'rural' | 'regionalCity' | 'metro' | 'tokyo23' | 'abroad';
+export type BirthRegionId =
+  | 'rural'
+  | 'ruralRemote'
+  | 'regionalCity'
+  | 'metro'
+  | 'tokyo23'
+  | 'abroad';
 
 export const DEVIATION_MIN = 35;
 export const DEVIATION_MAX = 85;

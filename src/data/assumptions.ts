@@ -83,6 +83,12 @@ export const familyWealthOptions: FamilyWealthOption[] = [
     note: '余裕が少ない寄りの帯。',
   },
   {
+    id: 'modestAbsolute',
+    label: '実家は頼れないと言い切れる',
+    displayDeviation: 35,
+    note: '余裕がほとんどない寄りの帯。',
+  },
+  {
     id: 'averageFw',
     label: '一般的な中流',
     displayDeviation: 45,
@@ -122,6 +128,12 @@ export const birthRegionOptions: BirthRegionOption[] = [
     label: '地方（地方都市以外）',
     displayDeviation: 35,
     note: '地方寄りの帯。',
+  },
+  {
+    id: 'ruralRemote',
+    label: '僻地・田舎寄り',
+    displayDeviation: 35,
+    note: '地方都市よりずっとローカルな帯。',
   },
   {
     id: 'regionalCity',
